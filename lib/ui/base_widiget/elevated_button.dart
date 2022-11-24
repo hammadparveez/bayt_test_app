@@ -19,9 +19,10 @@ class ByatElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: onTap,
         style: ButtonStyle(
-            padding: _style(const EdgeInsets.symmetric(vertical: 12, horizontal: 8)),
+            padding:
+                _style(const EdgeInsets.symmetric(vertical: 12, horizontal: 8)),
             shape: _style(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radius)))),
         child: Row(
