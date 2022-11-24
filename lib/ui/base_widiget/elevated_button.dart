@@ -21,19 +21,25 @@ class ByatElevatedButton extends StatelessWidget {
     return ElevatedButton(
         onPressed: () {},
         style: ButtonStyle(
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            padding: _style(const EdgeInsets.symmetric(vertical: 12, horizontal: 8)),
+            shape: _style(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radius)))),
         child: Row(
           children: [
             Expanded(child: Center(child: Text(title))),
-            if(hasSuffixIcon)
-            Container(
-              padding: const  EdgeInsets.all(5),
-              decoration: const BoxDecoration(
-                  color: ByatColors.primaryDark, shape: BoxShape.circle),
-              child: suffixIcon != null ? Icon(suffixIcon) : const Icon(Icons.arrow_forward, size: 12),
-            ),
+            if (hasSuffixIcon)
+              Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                    color: ByatColors.primaryDark, shape: BoxShape.circle),
+                child: suffixIcon != null
+                    ? Icon(suffixIcon)
+                    : const Icon(Icons.arrow_forward, size: 12),
+              ),
           ],
         ));
   }
+
+  MaterialStateProperty<T> _style<T>(T styleProperty) =>
+      MaterialStateProperty.all(styleProperty);
 }
