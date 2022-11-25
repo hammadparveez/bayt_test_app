@@ -1,4 +1,4 @@
-import 'package:bayt_test_app/provider/mock_provider.dart';
+import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class ByatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MockProvider(),
+      create: (_) => FilterProvider(),
       child: MaterialApp(
         title: 'Byat Test App',
         debugShowCheckedModeBanner: false,
