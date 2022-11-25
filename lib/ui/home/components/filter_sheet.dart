@@ -35,32 +35,33 @@ class FilterSheet extends StatelessWidget {
                 ],
               ),
             ),
-            FilterCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Sort by'),
-                  Consumer<FilterProvider>(builder: (context, filter, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomRadioButton(
-                            title: 'Ascending',
-                            groupValue: filter.orderedBy,
-                            selectedValue: OrderBy.ascending,
-                            onSelect: filter.changeOrder),
-                        CustomRadioButton(
-                          title: 'Descending',
-                          groupValue: filter.orderedBy,
-                          selectedValue: OrderBy.descending,
-                          onSelect: filter.changeOrder,
-                        ),
-                      ],
-                    );
-                  }),
-                ],
-              ),
-            ),
+            // FilterCard(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text('Sort by'),
+            //       Consumer<FilterProvider>(builder: (context, filter, child) {
+            //         return Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             CustomRadioButton(
+            //                 title: 'Ascending',
+            //                 groupValue: filter.orderedBy,
+            //                 selectedValue: OrderBy.ascending,
+            //                 onSelect: filter.changeOrder),
+            //             CustomRadioButton(
+            //               title: 'Descending',
+            //               groupValue: filter.orderedBy,
+            //               selectedValue: OrderBy.descending,
+            //               onSelect: filter.changeOrder,
+            //             ),
+            //           ],
+            //         );
+            //       }),
+            //     ],
+            //   ),
+            // ),
+
             FilterCard(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,8 +82,25 @@ class FilterSheet extends StatelessWidget {
                 }),
               ],
             )),
-            ByatElevatedButton(
-                title: 'Apply Filter', onTap: () {}, hasSuffixIcon: true),
+            const Spacer(),
+            Row(
+              children: [
+                Expanded(
+                  child: ByatElevatedButton(
+                    backgroundColor: ByatColors.darkGrey,
+                    title: 'Reset',
+                    onTap: context.read<FilterProvider>().onResetFilter,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ByatElevatedButton(
+                    title: 'Apply Filter',
+                    onTap: context.read<FilterProvider>().onApplyFilter,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

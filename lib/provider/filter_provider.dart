@@ -1,4 +1,5 @@
 import 'package:bayt_test_app/mock_data.dart';
+import 'package:bayt_test_app/model/entity/user_model.dart';
 import 'package:flutter/material.dart';
 
 enum OrderBy { ascending, descending }
@@ -8,10 +9,9 @@ enum OrderByDate { oldest, latest, random }
 class FilterProvider extends ChangeNotifier {
   FilterProvider() {
     filterOnlyNationality();
-    sortDate();
   }
   final orderByDateText = ['Oldest', 'Latest', 'Random'];
-  final duplicatedData = userData;
+  List<UserModel> duplicatedData = userData;
   final nationality = <String>[];
   String selectedNationality = 'All';
   double startingDate = 0;
@@ -36,7 +36,6 @@ class FilterProvider extends ChangeNotifier {
   }
 
   void changeOrder(OrderBy? selectedOrder) {
-    sortDate();
     if (selectedOrder != orderedBy) {
       orderedBy = selectedOrder!;
       notifyListeners();
@@ -49,10 +48,50 @@ class FilterProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   onDateOrderSelect(OrderByDate? item) {
     if (item != null) {
-       selectedDateOrder = item;
+      selectedDateOrder = item;
       notifyListeners();
     }
+  }
+
+  onResetFilter() {
+    selectedDateOrder = OrderByDate.random;
+    selectedNationality = 'All';
+    duplicatedData = userData;
+    notifyListeners();
+  }
+
+  onApplyFilter() {
+    if (selectedNationality != 'All') {
+      final filteredData = userData
+          .where((item) => item.nationality == selectedNationality)
+          .toList();
+      duplicatedData = filteredData;
+    } else {
+      duplicatedData = userData;
+    }
+    switch (orderedBy) {
+      case OrderBy.ascending:
+        duplicatedData.sort((item1, item2) => item1.name.compareTo(item2.name));
+        break;
+      case OrderBy.descending:
+        duplicatedData.sort((item1, item2) => item2.name.compareTo(item1.name));
+        break;
+    }
+    switch (selectedDateOrder) {
+      case OrderByDate.latest:
+        duplicatedData.sort((item1, item2) => item2.date.compareTo(item1.date));
+        break;
+      case OrderByDate.oldest:
+        duplicatedData.sort((item1, item2) => item1.date.compareTo(item2.date));
+        break;
+      case OrderByDate.random:
+        duplicatedData.shuffle();
+        break;
+    }
+
+    notifyListeners();
   }
 }

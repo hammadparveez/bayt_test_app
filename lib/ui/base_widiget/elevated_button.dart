@@ -7,6 +7,7 @@ class ByatElevatedButton extends StatelessWidget {
   final IconData? suffixIcon;
   final String title;
   final VoidCallback onTap;
+  final Color? backgroundColor;
   const ByatElevatedButton({
     Key? key,
     required this.title,
@@ -14,6 +15,7 @@ class ByatElevatedButton extends StatelessWidget {
     this.radius = 10,
     this.hasSuffixIcon = false,
     this.suffixIcon,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -21,6 +23,7 @@ class ByatElevatedButton extends StatelessWidget {
     return ElevatedButton(
         onPressed: onTap,
         style: ButtonStyle(
+          backgroundColor: _style(backgroundColor),
             padding:
                 _style(const EdgeInsets.symmetric(vertical: 12, horizontal: 8)),
             shape: _style(RoundedRectangleBorder(

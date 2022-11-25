@@ -1,10 +1,16 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
+import 'package:bayt_test_app/provider/search_provider.dart';
+
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late final SharedPreferences? pref;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  pref = await SharedPreferences.getInstance();
   runApp(const ByatApp());
 }
 
@@ -13,8 +19,12 @@ class ByatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => FilterProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
+        
+      ],
       child: MaterialApp(
         title: 'Byat Test App',
         debugShowCheckedModeBanner: false,
