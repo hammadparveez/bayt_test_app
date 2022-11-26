@@ -1,5 +1,5 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
-import 'package:bayt_test_app/provider/search_provider.dart';
+
 
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/util/colors.dart';
@@ -22,7 +22,6 @@ class ByatApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FilterProvider()),
-        ChangeNotifierProvider(create: (_) => SearchProvider()),
         
       ],
       child: MaterialApp(

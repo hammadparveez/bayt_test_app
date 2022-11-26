@@ -1,7 +1,4 @@
-import 'package:bayt_test_app/main.dart';
-import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
-import 'package:bayt_test_app/provider/search_provider.dart';
 
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
 
@@ -11,48 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class HomeUI extends StatefulWidget {
-  HomeUI({super.key});
-
-  @override
-  State<HomeUI> createState() => _HomeUIState();
-}
-
-class _HomeUIState extends State<HomeUI> {
-  late final TextEditingController searchController;
-  late final FocusNode searchFocusNode;
-  @override
-  void initState() {
-    super.initState();
-    searchFocusNode = FocusNode();
-    searchController = TextEditingController();
-    Future.microtask(() {
-      searchController.addListener(() {
-        context
-            .read<SearchProvider>()
-            .searchContentByName(searchController.text);
-      });
-      searchFocusNode.addListener(() {
-        setState(() {});
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    searchFocusNode.dispose();
-    super.dispose();
-  }
+class HomeUI extends StatelessWidget {
+  const HomeUI({super.key});
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('${pref}');
     return Scaffold(
       appBar: AppBar(
         title: ByatTextField(
-            controller: searchController,
-            focusNode: searchFocusNode,
+            controller: context.read<FilterProvider>().searchController,
+            focusNode: context.read<FilterProvider>().searchFocusNode,
             showBorder: false,
             suffixIcon:
                 const Icon(Icons.search, size: 26, color: ByatColors.white)),
@@ -102,7 +67,7 @@ class _HomeUIState extends State<HomeUI> {
               ),
             ],
           ),
-          if (searchFocusNode.hasFocus)
+          if (context.watch<FilterProvider>().searchFocusNode.hasFocus)
             Positioned(
                 child: Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -113,23 +78,23 @@ class _HomeUIState extends State<HomeUI> {
                   color: ByatColors.ligtGrey),
               width: double.infinity,
               child: Wrap(
-                children: [
-                  ...List.generate(
-                      8,
-                      ((index) => Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
-                            margin: const EdgeInsets.only(right: 8, bottom: 8),
-                            decoration: BoxDecoration(
-                              color: ByatColors.primary,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Text(
-                              'Mason',
-                              style: TextStyle(color: ByatColors.white),
-                            ),
-                          ))),
-                ],
+                children: context
+                    .watch<FilterProvider>()
+                    .searchedHistory
+                    .map((e) => Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 5),
+                          margin: const EdgeInsets.only(right: 8, bottom: 8),
+                          decoration: BoxDecoration(
+                            color: ByatColors.primary,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            e,
+                            style: const TextStyle(color: ByatColors.white),
+                          ),
+                        ))
+                    .toList(),
               ),
             ))
         ],
