@@ -67,37 +67,84 @@ class HomeUI extends StatelessWidget {
               ),
             ],
           ),
-          if (context.watch<FilterProvider>().searchFocusNode.hasFocus)
-            Positioned(
-                child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                  color: ByatColors.ligtGrey),
-              width: double.infinity,
-              child: Wrap(
-                children: context
-                    .watch<FilterProvider>()
-                    .searchedHistory
-                    .map((e) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 5),
-                          margin: const EdgeInsets.only(right: 8, bottom: 8),
-                          decoration: BoxDecoration(
-                            color: ByatColors.primary,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            e,
-                            style: const TextStyle(color: ByatColors.white),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ))
+          Consumer<FilterProvider>(builder: (context, filter, child) {
+            if (filter.searchFocusNode.hasFocus &&
+                filter.searchedHistory.isNotEmpty) {
+              return Positioned(
+                  child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8)),
+                    color: Color(0xFFE9E8E8)),
+                width: double.infinity,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      children: context
+                          .watch<FilterProvider>()
+                          .searchedHistory
+                          .map((e) => CustomBadge(
+                                title: e,
+                                onTap: () => context
+                                    .read<FilterProvider>()
+                                    .onSavedHistoryTap(e),
+                              ))
+                          .toList(),
+                    ),
+                    const Divider(),
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: CustomBadge(
+                          title: 'Clear history',
+                          onTap:
+                              context.read<FilterProvider>().clearSearchHistory,
+                          backgroundColor: ByatColors.ligtGrey,
+                          titleColor: ByatColors.black,
+                        )),
+                  ],
+                ),
+              ));
+            }
+            return const SizedBox();
+          }),
         ],
+      ),
+    );
+  }
+}
+
+class CustomBadge extends StatelessWidget {
+  const CustomBadge({
+    Key? key,
+    this.onTap,
+    required this.title,
+    this.backgroundColor = ByatColors.primary,
+    this.titleColor = ByatColors.white,
+  }) : super(key: key);
+  final VoidCallback? onTap;
+  final String title;
+  final Color? backgroundColor;
+  final Color? titleColor;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        margin: const EdgeInsets.only(right: 8, bottom: 8),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(color: titleColor),
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ final userData = [
   UserModel('Hammad', DateTime.parse('2022-10-09'), 'Pakistan'),
   UserModel('Hammaz', DateTime.parse('2022-10-08'), 'Pakistan'),
   UserModel('Mason', DateTime.parse('2022-11-09'), 'India'),
+  UserModel('MasHaon', DateTime.parse('2022-11-09'), 'India'),
   UserModel('Byat', DateTime.parse('2021-11-08'), 'Canada'),
   UserModel('James', DateTime.parse('2022-10-10'), 'USA'),
   UserModel('Bond', DateTime.parse('2004-05-09'), 'England'),

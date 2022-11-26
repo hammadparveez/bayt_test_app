@@ -2,6 +2,7 @@ import 'package:bayt_test_app/main.dart';
 import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/model/entity/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:bayt_test_app/util/extensions.dart';
 
 enum OrderBy { ascending, descending }
 
@@ -42,21 +43,31 @@ class FilterProvider extends ChangeNotifier {
 
   _saveSearchHistory() {
     final history = pref!.getStringList(SEARCHED_HISTORY_KEY) ?? [];
-
     if (!searchFocusNode.hasFocus) {
-      debugPrint('Focus Lost');
       if (pref != null) {
-        if (searchController.text.isNotEmpty &&
-            history.length < savedHistoryMaxLength) {
-          if (!history.contains(searchController.text)) {
-            history.add(searchController.text);
+        final text = searchController.text.toLowerCase();
+        if (text.length > 1 && history.length < savedHistoryMaxLength) {
+          if (!history.contains(text)) {
+            history.add(text);
             pref!.setStringList(SEARCHED_HISTORY_KEY, history);
           }
         }
-        debugPrint('History $history');
       }
     }
-    searchedHistory = history;
+    searchedHistory = history.modifyToCapitalize();
+    notifyListeners();
+  }
+
+  onSavedHistoryTap(String text) {
+    searchController.text = text;
+    searchFocusNode.unfocus();
+    onApplyFilter();
+  }
+
+  clearSearchHistory() async {
+    searchController.clear();
+    await pref?.remove(SEARCHED_HISTORY_KEY);
+    searchedHistory.clear();
     notifyListeners();
   }
 
@@ -122,11 +133,14 @@ class FilterProvider extends ChangeNotifier {
   void searchContentByName(String? name) {
     if (selectedNationality == 'All' &&
         selectedDateOrder == OrderByDate.random) {
-      duplicatedData =
-          userData.where((item) => item.name.contains(name ?? '')).toList();
+      duplicatedData = userData
+          .where((item) =>
+              item.name.toLowerCase().contains((name?.toLowerCase()) ?? ''))
+          .toList();
     } else {
       duplicatedData = userData.where((item) {
-        bool containsName = item.name.contains(name ?? '');
+        bool containsName =
+            item.name.toLowerCase().contains((name?.toLowerCase() ?? ''));
         bool constainsNationality = item.nationality == selectedNationality;
 
         if (containsName && constainsNationality) {
