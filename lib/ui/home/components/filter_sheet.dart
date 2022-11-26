@@ -89,14 +89,21 @@ class FilterSheet extends StatelessWidget {
                   child: ByatElevatedButton(
                     backgroundColor: ByatColors.darkGrey,
                     title: 'Reset',
-                    onTap: context.read<FilterProvider>().onResetFilter,
+                    onTap: () {
+                      context.read<FilterProvider>().onResetFilter();
+                      
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: ByatElevatedButton(
                     title: 'Apply Filter',
-                    onTap: context.read<FilterProvider>().onApplyFilter,
+                    onTap: () {
+                      context.read<FilterProvider>().onApplyFilter();
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],

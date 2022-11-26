@@ -1,4 +1,5 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
+import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
 
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
 
@@ -7,10 +8,11 @@ import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
-
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +25,12 @@ class HomeUI extends StatelessWidget {
                 const Icon(Icons.search, size: 26, color: ByatColors.white)),
         actions: [
           IconButton(
-              onPressed: () => showModalBottomSheet(
-                  context: context, builder: (_) => const FilterSheet()),
-              icon: Icon(Icons.filter_alt))
+              onPressed: () =>
+                
+                showModalBottomSheet(
+                  context: context, builder: (_) => const FilterSheet())
+              ,
+              icon: const Icon(Icons.filter_alt))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -48,10 +53,10 @@ class HomeUI extends StatelessWidget {
                       itemCount: filter.duplicatedData.length,
                       separatorBuilder: (_, index) => const Divider(),
                       itemBuilder: (_, index) {
-                        final date = DateFormat.yMMMd()
-                            .format(filter.duplicatedData[index].date);
+                        final item = filter.duplicatedData[index];
+                        final date = DateFormat.yMMMd().format(item.date);
                         return ListTile(
-                          title: Text(filter.duplicatedData[index].name),
+                          title: Text(item.name.toLowerCase().tr()),
                           trailing: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -113,38 +118,6 @@ class HomeUI extends StatelessWidget {
             return const SizedBox();
           }),
         ],
-      ),
-    );
-  }
-}
-
-class CustomBadge extends StatelessWidget {
-  const CustomBadge({
-    Key? key,
-    this.onTap,
-    required this.title,
-    this.backgroundColor = ByatColors.primary,
-    this.titleColor = ByatColors.white,
-  }) : super(key: key);
-  final VoidCallback? onTap;
-  final String title;
-  final Color? backgroundColor;
-  final Color? titleColor;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-        margin: const EdgeInsets.only(right: 8, bottom: 8),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(color: titleColor),
-        ),
       ),
     );
   }
