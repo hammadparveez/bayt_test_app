@@ -9,7 +9,7 @@ class AuthService {
       case 'weak-password':
         throw WeakPasswordException();
       case 'wrong-password':
-        throw WeakPasswordException();
+        throw WrongPasswordException();
       case 'email-already-in-use':
         throw WeakPasswordException();
 

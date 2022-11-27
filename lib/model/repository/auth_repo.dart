@@ -12,13 +12,13 @@ class AuthRepo {
       return user.user != null ? true : false;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        await _createUser(email, password);
+        return await _createUser(email, password);
       }
       throw BaseException(code: e.code);
     }
   }
 
-  _createUser(String email, String password) async {
+ Future<bool> _createUser(String email, String password) async {
     try {
       final user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);

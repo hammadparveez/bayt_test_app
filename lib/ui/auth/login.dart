@@ -20,10 +20,24 @@ class LoginUI extends StatefulWidget {
 }
 
 class _LoginUIState extends State<LoginUI> {
+  late final AuthProvider _authProvider;
+  late final TextEditingController emailController;
+  late final TextEditingController passwordController;
   @override
   void initState() {
     super.initState();
-    context.read<AuthProvider>().addListener(_eventListener);
+    _authProvider = context.read<AuthProvider>();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    _authProvider.addListener(_eventListener);
+  }
+
+  @override
+  void dispose() {
+    _authProvider.removeListener(_eventListener);
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   void _eventListener() {
@@ -53,12 +67,6 @@ class _LoginUIState extends State<LoginUI> {
   }
 
   @override
-  void dispose() {
-    context.read<AuthProvider>().removeListener(_eventListener);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -83,12 +91,12 @@ class _LoginUIState extends State<LoginUI> {
             const SizedBox(height: 20),
             ByatTextField(
                 hintText: 'example@byat.com',
-                controller: context.read<AuthProvider>().emailController,
+                controller: emailController,
                 prefixIcon: const Icon(Icons.email)),
             const SizedBox(height: 20),
             ByatTextField(
                 isPassword: true,
-                controller: context.read<AuthProvider>().passwordController,
+                controller: passwordController,
                 prefixIcon: const Icon(Icons.lock)),
             Align(
               alignment: context.locale.languageCode == 'en'
@@ -111,7 +119,7 @@ class _LoginUIState extends State<LoginUI> {
                 child: ByatElevatedButton(
                   title: 'sign_in'.tr(),
                   onTap: () {
-                    authProvider.login();
+                    authProvider.login(emailController.text,passwordController.text);
                   },
                   hasSuffixIcon: true,
                 ),

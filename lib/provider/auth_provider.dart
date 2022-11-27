@@ -6,26 +6,18 @@ enum AuthStatus { idle, loading, authenticated, failure }
 
 class AuthProvider extends ChangeNotifier {
   final _authService = AuthService();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  
   AuthStatus authStatus = AuthStatus.idle;
   String? errorMsg;
+  
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void login() async {
+  void login(String email, String password) async {
     try {
       errorMsg = null;
       authStatus = AuthStatus.loading;
       notifyListeners();
       await Future.delayed(const Duration(seconds: 1));
-      final hasAuthenticated = await _authService.loginViaEmailAndPassword(
-          emailController.text, passwordController.text);
+      final hasAuthenticated = await _authService.loginViaEmailAndPassword(email,password);
       authStatus =
           hasAuthenticated ? AuthStatus.authenticated : AuthStatus.failure;
     } on BaseException catch (e) {

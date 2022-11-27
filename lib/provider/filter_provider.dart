@@ -71,7 +71,6 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   filterOnlyNationality() {
     for (var user in userData) {
       if (!nationality.contains(user.nationality)) {
@@ -124,8 +123,10 @@ class FilterProvider extends ChangeNotifier {
           .where((item) => item.nationality == selectedNationality)
           .toList();
       duplicatedData = filteredData;
+      sortDateOrder();
     } else {
       duplicatedData = userData;
+      sortDateOrder();
     }
 
     notifyListeners();
