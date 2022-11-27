@@ -8,6 +8,7 @@ class ByatElevatedButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final Color? backgroundColor;
+
   const ByatElevatedButton({
     Key? key,
     required this.title,

@@ -33,14 +33,7 @@ class HomeUI extends StatelessWidget {
               icon: Icon(Icons.logout)),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.card_travel), label: 'Checkout'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-        ],
-      ),
+      
       body: Stack(
         children: [
           Column(

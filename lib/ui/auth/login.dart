@@ -12,8 +12,51 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
-class LoginUI extends StatelessWidget {
+class LoginUI extends StatefulWidget {
   const LoginUI({super.key});
+
+  @override
+  State<LoginUI> createState() => _LoginUIState();
+}
+
+class _LoginUIState extends State<LoginUI> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthProvider>().addListener(_eventListener);
+  }
+
+  void _eventListener() {
+    final authProvider = context.read<AuthProvider>();
+
+    switch (authProvider.authStatus) {
+      case AuthStatus.loading:
+        showDialog(
+            context: context,
+            builder: (_) => const Loader(
+                  title: 'Authenticating...',
+                ));
+        break;
+      case AuthStatus.authenticated:
+        Navigator.pushNamedAndRemoveUntil(
+            context, ByatRoute.home, (_) => false);
+
+        break;
+      case AuthStatus.failure:
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (_) => MessageDialog(
+                title: authProvider.errorMsg ?? 'Failed to Authenticate'));
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    context.read<AuthProvider>().removeListener(_eventListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +105,18 @@ class LoginUI extends StatelessWidget {
                   child: Text('lang'.tr())),
             ),
             const SizedBox(height: 8),
-            FractionallySizedBox(
-              widthFactor: .7,
-              child: ByatElevatedButton(
-                title: 'sign_in'.tr(),
-                onTap: () {
-                  context.read<AuthProvider>().login();
-                },
-                hasSuffixIcon: true,
-              ),
-            ),
+            Consumer<AuthProvider>(builder: (context, authProvider, child) {
+              return FractionallySizedBox(
+                widthFactor: .7,
+                child: ByatElevatedButton(
+                  title: 'sign_in'.tr(),
+                  onTap: () {
+                    authProvider.login();
+                  },
+                  hasSuffixIcon: true,
+                ),
+              );
+            }),
           ],
         ),
       ),
