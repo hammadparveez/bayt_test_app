@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 class BaseException implements Exception {
   final String? code;
   final String? message;
@@ -5,27 +7,26 @@ class BaseException implements Exception {
 }
 
 class UserNotFoundException extends BaseException {
-  UserNotFoundException({super.message = 'Sorry, No such user exists'});
+  UserNotFoundException({super.message = 'no_user_found'});
 }
 
 class EmailAlreadyExistsException extends BaseException {
   EmailAlreadyExistsException(
-      {super.message = 'Email you entered already Exists'});
+      {super.message = 'email_exists'});
 }
 
 class WrongPasswordException extends BaseException {
-  WrongPasswordException({super.message = 'Password you entered is incorrect'});
+  WrongPasswordException({super.message = 'password_incorrect'});
 }
 
 class WeakPasswordException extends BaseException {
-  WeakPasswordException({super.message = 'Please enter a strong password'});
+  WeakPasswordException({super.message = 'strong_password'});
 }
 
 class UserSignedOutException extends BaseException {
-  UserSignedOutException({super.message = 'You have been signed out'});
+  UserSignedOutException({super.message = 'you_signed_out'});
 }
 
 class SomethingWentWrongException extends BaseException {
-  SomethingWentWrongException(
-      {super.message = 'Oops, There was something wrong'});
+  SomethingWentWrongException({super.message = 'something_went_wrong'});
 }

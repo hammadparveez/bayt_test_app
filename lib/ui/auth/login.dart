@@ -47,8 +47,8 @@ class _LoginUIState extends State<LoginUI> {
       case AuthStatus.loading:
         showDialog(
             context: context,
-            builder: (_) => const Loader(
-                  title: 'Authenticating...',
+            builder: (_) =>  Loader(
+                  title: 'authenticating'.tr(),
                 ));
         break;
       case AuthStatus.authenticated:
@@ -61,7 +61,7 @@ class _LoginUIState extends State<LoginUI> {
         showDialog(
             context: context,
             builder: (_) => MessageDialog(
-                title: authProvider.errorMsg ?? 'Failed to Authenticate'));
+                title: authProvider.errorMsg?.tr() ?? 'something_went_wrong'.tr()));
         break;
     }
   }

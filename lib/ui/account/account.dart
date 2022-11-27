@@ -1,8 +1,7 @@
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AccountUI extends StatelessWidget {
   const AccountUI({super.key});
@@ -16,7 +15,7 @@ class AccountUI extends StatelessWidget {
           child: FractionallySizedBox(
             widthFactor: .8,
             child: ByatElevatedButton(
-                title: 'Log Out',
+                title: 'log_out'.tr(),
                 onTap: () {
                   Navigator.pushNamedAndRemoveUntil(
                       context, ByatRoute.login, (route) => false);

@@ -1,7 +1,6 @@
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CheckoutUI extends StatelessWidget {
   const CheckoutUI({super.key});
@@ -15,15 +14,15 @@ class CheckoutUI extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
             color: ByatColors.primary,
-            child: const TabBar(tabs: [
-              Tab(child: Text('Byat')),
-              Tab(child: Text('Ryat')),
+            child: TabBar(tabs: [
+              Tab(child: Text('byat'.tr())),
+              Tab(child: Text('ryat'.tr())),
             ]),
           ),
           Expanded(
             child: TabBarView(children: [
-              Center(child: Text('Byat')),
-              Center(child: Text('Byat Test App')),
+              Center(child: Text('byat'.tr())),
+              Center(child: Text('byat_test_app'.tr())),
             ]),
           ),
         ],

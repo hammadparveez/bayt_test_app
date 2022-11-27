@@ -7,6 +7,7 @@ import 'package:bayt_test_app/ui/home/home.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BottomNavigationUI extends StatefulWidget {
   const BottomNavigationUI({this.appBar, super.key});
@@ -55,11 +56,12 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
         onTap: _onSelectNavigation,
         selectedItemColor: Colors.purple,
         currentIndex: _selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.card_travel), label: 'Checkout'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+              icon: const Icon(Icons.home), label: 'home'.tr()),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.card_travel), label: 'checkout'.tr()),
+          BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'account'.tr()),
         ],
       ),
     );

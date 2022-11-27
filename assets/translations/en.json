@@ -14,6 +14,19 @@
     "zain": "Zain",
     "app_title": "Event Hub",
     "sign_in": "Sign In",
-    "lang": "إنجليزي"
+    "log_out": "Log out",
+    "lang": "إنجليزي",
+    "account": "Account",
+    "checkout": "Checkout",
+    "home": "Home",
+    "ryat":"Ryat",
+    "authenticating": "Authenticating",
+    "no_user_found": "Sorry, No such user exists",
+    "email_exists": "Email you entered already Exists",
+    "password_incorrect": "Password you entered is incorrect",
+    "strong_password": "Please enter a strong password",
+    "you_signed_out": "You have been signed out",
+    "something_went_wrong": "Oops, There was something wrong"
+,"byat_test_app":"Byat Test App"
  }
   
