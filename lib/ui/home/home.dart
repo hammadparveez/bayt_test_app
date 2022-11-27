@@ -12,7 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
-   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +25,12 @@ class HomeUI extends StatelessWidget {
                 const Icon(Icons.search, size: 26, color: ByatColors.white)),
         actions: [
           IconButton(
-              onPressed: () =>
-                
-                showModalBottomSheet(
-                  context: context, builder: (_) => const FilterSheet())
-              ,
-              icon: const Icon(Icons.filter_alt))
+              onPressed: () => showModalBottomSheet(
+                  context: context, builder: (_) => const FilterSheet()),
+              icon: const Icon(Icons.filter_alt)),
+          IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.logout)),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

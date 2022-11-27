@@ -1,3 +1,5 @@
+import 'package:bayt_test_app/model/repository/auth_repo.dart';
+import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/base_widiget/loader_dialog.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 
 class LoginUI extends StatelessWidget {
   const LoginUI({super.key});
@@ -37,13 +40,13 @@ class LoginUI extends StatelessWidget {
             const SizedBox(height: 20),
             ByatTextField(
                 hintText: 'example@byat.com',
+                controller: context.read<AuthProvider>().emailController,
                 prefixIcon: const Icon(Icons.email)),
             const SizedBox(height: 20),
             ByatTextField(
                 isPassword: true,
-                suffixIcon: const Icon(Icons.remove_red_eye),
+                controller: context.read<AuthProvider>().passwordController,
                 prefixIcon: const Icon(Icons.lock)),
-            // const SizedBox(height: 30),
             Align(
               alignment: context.locale.languageCode == 'en'
                   ? Alignment.centerRight
@@ -63,7 +66,9 @@ class LoginUI extends StatelessWidget {
               widthFactor: .7,
               child: ByatElevatedButton(
                 title: 'sign_in'.tr(),
-                onTap: () => Navigator.pushNamed(context, ByatRoute.home),
+                onTap: () {
+                  context.read<AuthProvider>().login();
+                },
                 hasSuffixIcon: true,
               ),
             ),

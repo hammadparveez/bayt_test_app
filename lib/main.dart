@@ -1,8 +1,10 @@
+import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +13,7 @@ late final SharedPreferences? pref;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp();
   pref = await SharedPreferences.getInstance();
   runApp(const ByatApp());
 }
@@ -23,6 +26,7 @@ class ByatApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],

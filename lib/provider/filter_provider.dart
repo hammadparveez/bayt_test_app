@@ -71,6 +71,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
   filterOnlyNationality() {
     for (var user in userData) {
       if (!nationality.contains(user.nationality)) {
