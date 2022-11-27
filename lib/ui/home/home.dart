@@ -1,4 +1,5 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
+import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
 
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
@@ -46,9 +47,10 @@ class HomeUI extends StatelessWidget {
             ),
           ],
         ),
-        Consumer<FilterProvider>(builder: (context, filter, child) {
-          if (filter.searchFocusNode.hasFocus &&
-              filter.searchedHistory.isNotEmpty) {
+        Consumer2<FilterProvider, SearchProvider>(
+            builder: (context, filter, searchProvider, child) {
+          if (searchProvider.searchFocusNode.hasFocus &&
+              searchProvider.searchedHistory.isNotEmpty) {
             return Positioned(
                 child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -63,14 +65,12 @@ class HomeUI extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Wrap(
-                    children: context
-                        .watch<FilterProvider>()
-                        .searchedHistory
+                    children: searchProvider.searchedHistory
                         .map((e) => CustomBadge(
                               title: e,
-                              onTap: () => context
-                                  .read<FilterProvider>()
-                                  .onSavedHistoryTap(e),
+                              onTap: () {
+                                searchProvider.onSavedHistoryTap(e);
+                              },
                             ))
                         .toList(),
                   ),
@@ -79,8 +79,7 @@ class HomeUI extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       child: CustomBadge(
                         title: 'Clear history',
-                        onTap:
-                            context.read<FilterProvider>().clearSearchHistory,
+                        onTap: searchProvider.clearSearchHistory,
                         backgroundColor: ByatColors.ligtGrey,
                         titleColor: ByatColors.black,
                       )),

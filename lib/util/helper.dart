@@ -1,3 +1,3 @@
-import 'package:bayt_test_app/model/exceptions/auth_exceptions.dart';
+import 'package:bayt_test_app/domain/exceptions/auth_exceptions.dart';
 
 

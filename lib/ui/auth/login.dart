@@ -1,4 +1,4 @@
-import 'package:bayt_test_app/model/repository/auth_repo.dart';
+import 'package:bayt_test_app/domain/repository/auth_repo.dart';
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
@@ -47,13 +47,13 @@ class _LoginUIState extends State<LoginUI> {
       case AuthStatus.loading:
         showDialog(
             context: context,
-            builder: (_) =>  Loader(
+            builder: (_) => Loader(
                   title: 'authenticating'.tr(),
                 ));
         break;
       case AuthStatus.authenticated:
         Navigator.pushNamedAndRemoveUntil(
-            context, ByatRoute.home, (_) => false);
+            context, ByatRoute.main, (_) => false);
 
         break;
       case AuthStatus.failure:
@@ -61,7 +61,8 @@ class _LoginUIState extends State<LoginUI> {
         showDialog(
             context: context,
             builder: (_) => MessageDialog(
-                title: authProvider.errorMsg?.tr() ?? 'something_went_wrong'.tr()));
+                title: authProvider.errorMsg?.tr() ??
+                    'something_went_wrong'.tr()));
         break;
     }
   }
@@ -69,63 +70,68 @@ class _LoginUIState extends State<LoginUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/logo.png',
-              height: 60,
-              width: 60,
-            ),
-            const SizedBox(height: 8),
-            Text('app_title'.tr(),
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.w700)),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Text('sign_in'.tr(),
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w700))),
-            const SizedBox(height: 20),
-            ByatTextField(
-                hintText: 'example@byat.com',
-                controller: emailController,
-                prefixIcon: const Icon(Icons.email)),
-            const SizedBox(height: 20),
-            ByatTextField(
-                isPassword: true,
-                controller: passwordController,
-                prefixIcon: const Icon(Icons.lock)),
-            Align(
-              alignment: context.locale.languageCode == 'en'
-                  ? Alignment.centerRight
-                  : Alignment.centerLeft,
-              child: TextButton(
-                  onPressed: () {
-                    if (context.locale.languageCode == 'en') {
-                      context.setLocale(Locale('ar'));
-                    } else {
-                      context.setLocale(Locale('en'));
-                    }
-                  },
-                  child: Text('lang'.tr())),
-            ),
-            const SizedBox(height: 8),
-            Consumer<AuthProvider>(builder: (context, authProvider, child) {
-              return FractionallySizedBox(
-                widthFactor: .7,
-                child: ByatElevatedButton(
-                  title: 'sign_in'.tr(),
-                  onTap: () {
-                    authProvider.login(emailController.text,passwordController.text);
-                  },
-                  hasSuffixIcon: true,
-                ),
-              );
-            }),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/logo.png',
+                height: 60,
+                width: 60,
+              ),
+              const SizedBox(height: 8),
+              Text('app_title'.tr(),
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.w700)),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('sign_in'.tr(),
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.w700))),
+              const SizedBox(height: 20),
+              ByatTextField(
+                  hintText: 'example@byat.com',
+                  controller: emailController,
+                  prefixIcon: const Icon(Icons.email)),
+              const SizedBox(height: 20),
+              ByatTextField(
+                  isPassword: true,
+                  controller: passwordController,
+                  prefixIcon: const Icon(Icons.lock)),
+              Align(
+                alignment: context.locale.languageCode == 'en'
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: TextButton(
+                    onPressed: () {
+                      if (context.locale.languageCode == 'en') {
+                        context.setLocale(Locale('ar'));
+                      } else {
+                        context.setLocale(Locale('en'));
+                      }
+                    },
+                    child: Text('lang'.tr())),
+              ),
+              const SizedBox(height: 8),
+              Consumer<AuthProvider>(builder: (context, authProvider, child) {
+                return FractionallySizedBox(
+                  widthFactor: .7,
+                  child: ByatElevatedButton(
+                    title: 'sign_in'.tr(),
+                    onTap: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, ByatRoute.main, (_) => false);
+                      // authProvider.login(
+                      //     emailController.text, passwordController.text);
+                    },
+                    hasSuffixIcon: true,
+                  ),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

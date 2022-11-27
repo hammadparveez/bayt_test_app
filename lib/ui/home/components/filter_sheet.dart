@@ -1,4 +1,5 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
+import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/ui/base_widiget/custom_radio_button.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/home/components/filter_card.dart';
@@ -91,7 +92,7 @@ class FilterSheet extends StatelessWidget {
                     title: 'Reset',
                     onTap: () {
                       context.read<FilterProvider>().onResetFilter();
-                      
+
                       Navigator.pop(context);
                     },
                   ),
@@ -101,7 +102,15 @@ class FilterSheet extends StatelessWidget {
                   child: ByatElevatedButton(
                     title: 'Apply Filter',
                     onTap: () {
-                      context.read<FilterProvider>().onApplyFilter();
+                      final filterProvider = context.read<FilterProvider>();
+                      final searchProvider = context.read<SearchProvider>();
+
+                      if (searchProvider.searchController.text.isNotEmpty) {
+                        searchProvider.searchContentByName(
+                            searchProvider.searchController.text);
+                      } else {
+                      filterProvider.onApplyFilter();
+                      }
                       Navigator.pop(context);
                     },
                   ),

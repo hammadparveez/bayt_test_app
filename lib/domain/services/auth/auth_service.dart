@@ -1,10 +1,10 @@
-import 'package:bayt_test_app/model/exceptions/auth_exceptions.dart';
-import 'package:bayt_test_app/model/repository/auth_repo.dart';
+import 'package:bayt_test_app/domain/exceptions/auth_exceptions.dart';
+import 'package:bayt_test_app/domain/repository/auth_repo.dart';
 
 class AuthService {
   final _authRepo = AuthRepo();
 
-  BaseException _handleAuthError(String? code) {
+  BaseException authExceptionFactory(String? code) {
     switch (code) {
       case 'weak-password':
         throw WeakPasswordException();
@@ -12,7 +12,6 @@ class AuthService {
         throw WrongPasswordException();
       case 'email-already-in-use':
         throw WeakPasswordException();
-
       default:
         throw SomethingWentWrongException();
     }
@@ -22,7 +21,7 @@ class AuthService {
     try {
       return await _authRepo.loginViaEmailAndPassword(email, password);
     } on BaseException catch (e) {
-      throw _handleAuthError(e.code);
+      throw authExceptionFactory(e.code);
     }
   }
 }

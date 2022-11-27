@@ -1,4 +1,4 @@
-import 'package:bayt_test_app/model/entity/user_model.dart';
+import 'package:bayt_test_app/domain/model/user_model.dart';
 
 final userData = [
   UserModel('Hammad', DateTime.parse('2022-10-09'), 'Pakistan'),
