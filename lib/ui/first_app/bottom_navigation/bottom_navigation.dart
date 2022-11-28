@@ -1,9 +1,10 @@
 import 'package:bayt_test_app/provider/search_provider.dart';
-import 'package:bayt_test_app/ui/account/account.dart';
+import 'package:bayt_test_app/ui/first_app/account/account.dart';
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
-import 'package:bayt_test_app/ui/checkout/checkout.dart';
-import 'package:bayt_test_app/ui/home/components/filter_sheet.dart';
-import 'package:bayt_test_app/ui/home/home.dart';
+import 'package:bayt_test_app/ui/first_app/checkout/checkout.dart';
+import 'package:bayt_test_app/ui/first_app/home/components/filter_sheet.dart';
+import 'package:bayt_test_app/ui/first_app/home/home.dart';
+
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

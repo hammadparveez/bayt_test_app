@@ -2,8 +2,9 @@ import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
 
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
-import 'package:bayt_test_app/ui/home/components/filter_card.dart';
-import 'package:bayt_test_app/ui/home/components/filter_dropdown.dart';
+import 'package:bayt_test_app/ui/first_app/home/components/filter_card.dart';
+import 'package:bayt_test_app/ui/first_app/home/components/filter_dropdown.dart';
+
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
