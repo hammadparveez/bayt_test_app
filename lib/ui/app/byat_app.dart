@@ -1,6 +1,8 @@
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
+import 'package:bayt_test_app/provider/locale_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
+import 'package:bayt_test_app/provider/theme_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,12 +10,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ByatApp extends StatelessWidget {
-  const ByatApp({super.key});
+   ByatApp({super.key});
   final localePath = 'assets/translations';
+
+
+final lightTheme = ThemeData(
+              indicatorColor: ByatColors.primaryDark,
+              cardColor: ByatColors.primary,
+              colorScheme: const ColorScheme.light(
+                primary: ByatColors.primary,
+              ),
+            );
+
+final darkTheme = ThemeData(
+              // cardColor: ByatColors.primary,
+              indicatorColor: ByatColors.white,
+              colorScheme: const ColorScheme.dark(
+                onPrimary: ByatColors.white,
+                primary: ByatColors.primary,
+                surface: ByatColors.primary,
+                secondary: ByatColors.white,
+              ),
+            );
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => FilterProvider()),
         ChangeNotifierProxyProvider<FilterProvider, SearchProvider>(
@@ -32,21 +56,17 @@ class ByatApp extends StatelessWidget {
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              cardColor: ByatColors.primary,
-              // radioTheme: RadioThemeData(
-              //     fillColor: MaterialStateProperty.all(ByatColors.white)),
-              colorScheme: ColorScheme.light(
-                primary: ByatColors.primary,
-                secondary: Color(0xff00ff00),
-                onSecondary: Color(0xff00ff00),
-              ),
-            ),
+            themeMode: context.watch<ThemeProvider>().themeMode,
+            darkTheme: darkTheme,
+            theme: lightTheme,
             onGenerateRoute: ByatRoute.onGenerateRoute,
             initialRoute: ByatRoute.login,
+            navigatorKey: ByatRoute.navigatorKey,
           );
         }),
       ),
     );
   }
+
+
 }

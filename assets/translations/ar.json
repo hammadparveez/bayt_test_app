@@ -29,5 +29,7 @@
     "something_went_wrong": "عفوًا ، كان هناك خطأ ما",
     "byat_test_app":"تطبيق Byat Test",
     "filter_by_nationality":"تصفية حسب الجنسية",
-    "date_range": "نطاق الموعد"
+    "date_range": "نطاق الموعد",
+    "toggle_theme": "تبديل وضع السمة",
+    "toggle_lang": "تبديل اللغة"
  }

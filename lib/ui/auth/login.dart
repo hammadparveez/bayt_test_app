@@ -4,6 +4,7 @@ import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/base_widiget/loader_dialog.dart';
 import 'package:bayt_test_app/ui/base_widiget/message_dialog.dart';
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
+import 'package:bayt_test_app/util/colors.dart';
 
 import 'package:flutter/material.dart';
 
@@ -102,6 +103,11 @@ class _LoginUIState extends State<LoginUI> {
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: TextButton(
+                    style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? ByatColors.white
+                                : Theme.of(context).colorScheme.primary)),
                     onPressed: () {
                       if (context.locale.languageCode == 'en') {
                         context.setLocale(const Locale('ar'));
@@ -111,7 +117,6 @@ class _LoginUIState extends State<LoginUI> {
                     },
                     child: Text('lang'.tr())),
               ),
-              const SizedBox(height: 8),
               Consumer<AuthProvider>(builder: (context, authProvider, child) {
                 return FractionallySizedBox(
                   widthFactor: .7,

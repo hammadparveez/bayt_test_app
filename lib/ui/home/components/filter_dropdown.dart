@@ -1,4 +1,3 @@
-
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +19,13 @@ class FilterDropDown<T> extends StatelessWidget {
         value: value,
         underline: const SizedBox(),
         isExpanded: true,
+        iconEnabledColor: Theme.of(context).brightness == Brightness.light
+            ? ByatColors.dropdownArrowColor
+            : null,
         style: const TextStyle(color: Colors.white),
-        dropdownColor: ByatColors.primary,
+        dropdownColor: Theme.of(context).brightness == Brightness.light
+            ? ByatColors.primary
+            : ByatColors.dropdownColor,
         items: dropdownItems
             .map((e) => DropdownMenuItem(
                 value: e,

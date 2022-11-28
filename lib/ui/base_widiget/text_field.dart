@@ -32,8 +32,9 @@ class ByatTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final isSuffixIcon = suffixIcon.runtimeType == Icon;
-    final isPrefixIcon = suffixIcon.runtimeType == Icon;
+    final isPrefixIcon = prefixIcon.runtimeType == Icon;
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
@@ -44,12 +45,12 @@ class ByatTextField extends StatelessWidget {
       decoration: InputDecoration(
         suffixIcon: isSuffixIcon
             ? IconTheme(
-                data: IconThemeData(color: suffixIconColor),
+                data: IconThemeData(color: suffixIconColor ?? Colors.black54),
                 child: suffixIcon ?? const SizedBox())
             : const SizedBox(),
         prefixIcon: isPrefixIcon
             ? IconTheme(
-                data: IconThemeData(color: prefixIconColor),
+                data: IconThemeData(color: prefixIconColor ?? Colors.black54),
                 child: prefixIcon ?? const SizedBox())
             : const SizedBox(),
         hintText: hintText,

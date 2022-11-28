@@ -29,6 +29,8 @@
     "something_went_wrong": "Oops, There was something wrong"
 ,"byat_test_app":"Byat Test App",
 "filter_by_nationality": "Filter by nationality",
-"date_range": "Date Range"
+"date_range": "Date Range",
+"toggle_theme": "Toggle Theme Mode",
+"toggle_lang": "Toggle Language"
  }
   

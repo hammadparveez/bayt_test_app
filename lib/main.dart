@@ -1,4 +1,3 @@
-
 import 'package:bayt_test_app/ui/app/byat_app.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -8,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const SEARCHED_HISTORY_KEY = 'search_history_key';
+const THEME_STATUS_KEY = 'theme_dark_mode_key';
 late final SharedPreferences? pref;
 void main() async {
   await _init();
-  runApp(const ByatApp());
+  runApp(ByatApp());
 }
 
 Future<void> _init() async {

@@ -76,8 +76,13 @@ class FilterSheet extends StatelessWidget {
               value: filter.selectedDateOrder,
               underline: const SizedBox(),
               isExpanded: true,
+              iconEnabledColor: Theme.of(context).brightness == Brightness.light
+                  ? ByatColors.dropdownArrowColor
+                  : null,
+              dropdownColor: Theme.of(context).brightness == Brightness.light
+                  ? ByatColors.primary
+                  : ByatColors.dropdownColor,
               style: const TextStyle(color: Colors.white),
-              dropdownColor: ByatColors.primary,
               items: OrderByDate.values
                   .map((e) => DropdownMenuItem(
                       value: e, child: Text(e.name.toUpperCase())))

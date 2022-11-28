@@ -13,7 +13,7 @@ class CheckoutUI extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            color: ByatColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             child: TabBar(tabs: [
               Tab(child: Text('byat'.tr())),
               Tab(child: Text('ryat'.tr())),

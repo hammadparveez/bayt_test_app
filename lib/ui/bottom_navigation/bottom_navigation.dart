@@ -19,11 +19,6 @@ class BottomNavigationUI extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigationUI> {
   int _selectedIndex = 0;
   late final SearchProvider _searchProvider;
-  final screens = const [
-    HomeUI(),
-    CheckoutUI(),
-    AccountUI(),
-  ];
 
   @override
   initState() {
@@ -39,6 +34,8 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
 
   @override
   dispose() {
+    _searchProvider.searchController.removeListener(() => _searchProvider
+        .searchContentByName(_searchProvider.searchController.text));
     _searchProvider.searchController.dispose();
     _searchProvider.searchFocusNode.dispose();
     super.dispose();
@@ -73,6 +70,12 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
 
   @override
   Widget build(BuildContext context) {
+    final screens = [
+      HomeUI(),
+      CheckoutUI(),
+      AccountUI(),
+    ];
+
     return Scaffold(
       appBar: _selectedIndex == 0 ? _homeUIAppBar(context) : null,
       body: screens[_selectedIndex],

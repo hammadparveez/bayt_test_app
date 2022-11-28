@@ -7,4 +7,6 @@ class ByatColors {
   static const black = Colors.black;
   static const ligtGrey = Color(0xFFC4C4C4);
   static const darkGrey = Color(0xFF9D9D9D);
+  static const dropdownColor = Color(0xFF303030);
+  static const dropdownArrowColor = Colors.white70;
 }
