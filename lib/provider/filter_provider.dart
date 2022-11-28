@@ -1,9 +1,8 @@
-
 import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/domain/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-
 
 enum OrderBy { ascending, descending }
 
@@ -16,6 +15,7 @@ class FilterProvider extends ChangeNotifier {
   // SearchProvider? searchProvider;
 
   final nationality = <String>[];
+  UserModel? selectedUserModel;
   List<UserModel> duplicatedData = userData;
   String selectedNationality = 'All';
   double startingDate = 0;
@@ -24,6 +24,10 @@ class FilterProvider extends ChangeNotifier {
   OrderByDate selectedDateOrder = OrderByDate.random;
 
   // void update(SearchProvider provider) => searchProvider = provider;
+  onUserSelect(UserModel user) {
+    selectedUserModel = user;
+    notifyListeners();
+  }
 
   filterOnlyNationality() {
     for (var user in userData) {
@@ -70,7 +74,7 @@ class FilterProvider extends ChangeNotifier {
   }
 
   onApplyFilter() {
-     if (selectedNationality != 'All') {
+    if (selectedNationality != 'All') {
       final filteredData = userData
           .where((item) => item.nationality == selectedNationality)
           .toList();

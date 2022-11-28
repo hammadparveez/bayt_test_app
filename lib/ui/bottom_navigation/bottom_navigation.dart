@@ -29,7 +29,7 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
     _searchProvider.searchController.addListener(() => _searchProvider
         .searchContentByName(_searchProvider.searchController.text));
     _searchProvider.searchFocusNode
-        .addListener(_searchProvider.saveSearchHistoryListener);
+        .addListener(_searchProvider.saveSearchHistory);
   }
 
   @override
@@ -49,16 +49,34 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
 
   PreferredSizeWidget _homeUIAppBar(BuildContext context) {
     return AppBar(
-      leadingWidth: 0,
-      titleSpacing: 0,
       title: ByatTextField(
-          controller: context.read<SearchProvider>().searchController,
-          focusNode: context.read<SearchProvider>().searchFocusNode,
-          showBorder: false,
-          suffixIconColor: Theme.of(context).colorScheme.onPrimary,
-          textColor: Theme.of(context).colorScheme.onPrimary,
-          cursorColor: Theme.of(context).colorScheme.onPrimary,
-          suffixIcon: const Icon(Icons.search, size: 26)),
+        controller: context.read<SearchProvider>().searchController,
+        focusNode: context.read<SearchProvider>().searchFocusNode,
+        showBorder: false,
+        suffixIconColor: Theme.of(context).colorScheme.onPrimary,
+        textColor: Theme.of(context).colorScheme.onPrimary,
+        cursorColor: Theme.of(context).colorScheme.onPrimary,
+        suffixIcon:
+            Consumer<SearchProvider>(builder: (context, searchProvider, child) {
+          final hasFocus = searchProvider.searchFocusNode.hasFocus;
+          return IconButton(
+            color: ByatColors.white,
+            icon: hasFocus ? const Icon(Icons.close) : const Icon(Icons.search),
+            onPressed: () {
+              if (hasFocus) {
+                searchProvider.searchController.clear();
+              } else {
+                searchProvider.searchFocusNode.requestFocus();
+              }
+            },
+          );
+        }),
+        // Icon(
+        //     context.watch<SearchProvider>().searchFocusNode.hasFocus
+        //         ? Icons.close
+        //         : Icons.search,
+        //     size: 26)),
+      ),
       actions: [
         IconButton(
             onPressed: () => showModalBottomSheet(

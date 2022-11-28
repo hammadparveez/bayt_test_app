@@ -13,6 +13,7 @@ class ByatTextField extends StatelessWidget {
     this.textColor,
     this.cursorColor,
     this.hintText,
+    this.border,
     this.isPassword = false,
     this.showBorder = true,
   }) : super(key: key);
@@ -24,15 +25,17 @@ class ByatTextField extends StatelessWidget {
   final bool isPassword;
   final bool showBorder;
   final Color? prefixIconColor, suffixIconColor, textColor, cursorColor;
+  final InputBorder? border;
 
-  final outlineBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(8),
-    borderSide: const BorderSide(width: .5, color: Colors.black54),
-  );
+  InputBorder get outlineBorder =>
+      border ??
+      OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(width: .5, color: Colors.black54),
+      );
 
   @override
   Widget build(BuildContext context) {
-    
     final isSuffixIcon = suffixIcon.runtimeType == Icon;
     final isPrefixIcon = prefixIcon.runtimeType == Icon;
     return TextFormField(
@@ -47,12 +50,12 @@ class ByatTextField extends StatelessWidget {
             ? IconTheme(
                 data: IconThemeData(color: suffixIconColor ?? Colors.black54),
                 child: suffixIcon ?? const SizedBox())
-            : const SizedBox(),
+            : suffixIcon,
         prefixIcon: isPrefixIcon
             ? IconTheme(
                 data: IconThemeData(color: prefixIconColor ?? Colors.black54),
                 child: prefixIcon ?? const SizedBox())
-            : const SizedBox(),
+            : prefixIcon,
         hintText: hintText,
         prefixIconColor: prefixIconColor,
         suffixIconColor: suffixIconColor,

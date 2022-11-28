@@ -38,7 +38,7 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  saveSearchHistoryListener() {
+  saveSearchHistory() {
     final history = pref!.getStringList(SEARCHED_HISTORY_KEY) ?? [];
     if (!searchFocusNode.hasFocus) {
       if (pref != null) {

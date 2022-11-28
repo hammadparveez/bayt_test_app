@@ -76,8 +76,8 @@ class _LoginUIState extends State<LoginUI> {
             children: [
               Image.asset(
                 'assets/logo.png',
-                height: 60,
-                width: 60,
+                height: 50,
+                width: 50,
               ),
               const SizedBox(height: 8),
               Text('app_title'.tr(),
@@ -123,10 +123,9 @@ class _LoginUIState extends State<LoginUI> {
                   child: ByatElevatedButton(
                     title: 'sign_in'.tr(),
                     onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, ByatRoute.main, (_) => false);
-                      // authProvider.login(
-                      //     emailController.text, passwordController.text);
+                      
+                      authProvider.login(
+                          emailController.text, passwordController.text);
                     },
                     hasSuffixIcon: true,
                   ),

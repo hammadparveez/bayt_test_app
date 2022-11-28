@@ -1,5 +1,6 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
+import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -46,10 +47,14 @@ class _UsersListViewWidget extends StatelessWidget {
           itemCount: filter.duplicatedData.length,
           separatorBuilder: (_, index) => const Divider(),
           itemBuilder: (_, index) {
-            final item = filter.duplicatedData[index];
-            final date = DateFormat.yMMMd().format(item.date);
+            final user = filter.duplicatedData[index];
+            final date = DateFormat.yMMMd().format(user.date);
             return ListTile(
-              title: Text(item.name.toLowerCase().tr()),
+              onTap:() {
+                filter.onUserSelect(user);
+                Navigator.pushNamed(context, ByatRoute.userDetail);
+              },
+              title: Text(user.name.toLowerCase().tr()),
               trailing: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [

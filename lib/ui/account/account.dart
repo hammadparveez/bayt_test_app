@@ -26,11 +26,14 @@ class AccountUI extends StatelessWidget {
           ),
         ),
         Center(
-          child: FractionallySizedBox(
-            widthFactor: .8,
-            child: ByatElevatedButton(
-                title: 'toggle_theme'.tr(),
-                onTap: context.read<ThemeProvider>().toggleMode),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: FractionallySizedBox(
+              widthFactor: .8,
+              child: ByatElevatedButton(
+                  title: 'toggle_theme'.tr(),
+                  onTap: context.read<ThemeProvider>().toggleMode),
+            ),
           ),
         ),
         Center(
