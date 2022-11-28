@@ -67,6 +67,7 @@ class SearchProvider extends ChangeNotifier {
 
   clearSearchHistory() async {
     searchController.clear();
+    searchFocusNode.unfocus();
     await pref?.remove(SEARCHED_HISTORY_KEY);
     searchedHistory.clear();
     notifyListeners();
