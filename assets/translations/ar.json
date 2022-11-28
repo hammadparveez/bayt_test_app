@@ -27,5 +27,7 @@
     "strong_password": "الرجاء إدخال كلمة مرور قوية",
     "you_signed_out": "لقد تم تسجيل خروجك",
     "something_went_wrong": "عفوًا ، كان هناك خطأ ما",
-    "byat_test_app":"تطبيق Byat Test"
+    "byat_test_app":"تطبيق Byat Test",
+    "filter_by_nationality":"تصفية حسب الجنسية",
+    "date_range": "نطاق الموعد"
  }

@@ -38,7 +38,7 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  saveSearchHistory() {
+  saveSearchHistoryListener() {
     final history = pref!.getStringList(SEARCHED_HISTORY_KEY) ?? [];
     if (!searchFocusNode.hasFocus) {
       if (pref != null) {
@@ -55,10 +55,14 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onSavedHistoryTap(String text) {
+  onSavedHistoryTagTap(String text) {
     searchController.text = text;
     searchFocusNode.unfocus();
-    filterProvider?.onApplyFilter();
+    filterProvider?.duplicatedData = filterProvider!.duplicatedData
+        .where((item) => item.name
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase()))
+        .toList();
   }
 
   clearSearchHistory() async {

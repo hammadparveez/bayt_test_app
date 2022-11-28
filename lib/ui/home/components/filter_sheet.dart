@@ -1,20 +1,20 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
-import 'package:bayt_test_app/ui/base_widiget/custom_radio_button.dart';
+
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/home/components/filter_card.dart';
 import 'package:bayt_test_app/ui/home/components/filter_dropdown.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FilterSheet extends StatelessWidget {
   const FilterSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .6,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -25,7 +25,7 @@ class FilterSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text('Filter By Nationality'),
+                  Text('filter_by_nationality'.tr()),
                   Consumer<FilterProvider>(builder: (context, filter, child) {
                     return FilterDropDown(
                       value: filter.selectedNationality,
@@ -67,7 +67,7 @@ class FilterSheet extends StatelessWidget {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Date Range', style: TextStyle(fontSize: 18)),
+                Text('date_range'.tr(), style:const  TextStyle(fontSize: 18)),
                 Consumer<FilterProvider>(builder: (context, filter, child) {
                   return DropdownButton(
                       value: filter.selectedDateOrder,
@@ -109,7 +109,7 @@ class FilterSheet extends StatelessWidget {
                         searchProvider.searchContentByName(
                             searchProvider.searchController.text);
                       } else {
-                      filterProvider.onApplyFilter();
+                        filterProvider.onApplyFilter();
                       }
                       Navigator.pop(context);
                     },

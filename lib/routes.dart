@@ -1,6 +1,6 @@
 import 'package:bayt_test_app/ui/auth/login.dart';
 import 'package:bayt_test_app/ui/bottom_navigation/bottom_navigation.dart';
-import 'package:bayt_test_app/ui/home/home.dart';
+
 import 'package:flutter/material.dart';
 
 class ByatRoute {

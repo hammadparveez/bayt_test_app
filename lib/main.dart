@@ -1,9 +1,6 @@
-import 'package:bayt_test_app/provider/auth_provider.dart';
-import 'package:bayt_test_app/provider/filter_provider.dart';
 
-import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/app/byat_app.dart';
-import 'package:bayt_test_app/util/colors.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

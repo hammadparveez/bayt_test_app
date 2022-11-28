@@ -1,4 +1,4 @@
-import 'package:bayt_test_app/provider/filter_provider.dart';
+
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/ui/account/account.dart';
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
@@ -35,7 +35,7 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
     _searchProvider.searchController.addListener(() => _searchProvider
         .searchContentByName(_searchProvider.searchController.text));
     _searchProvider.searchFocusNode
-        .addListener(_searchProvider.saveSearchHistory);
+        .addListener(_searchProvider.saveSearchHistoryListener);
   }
 
   @override
@@ -54,8 +54,8 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
   PreferredSizeWidget _homeUIAppBar(BuildContext context) {
     return AppBar(
       title: ByatTextField(
-          controller: context.watch<SearchProvider>().searchController,
-          focusNode: context.watch<SearchProvider>().searchFocusNode,
+          controller: context.read<SearchProvider>().searchController,
+          focusNode: context.read<SearchProvider>().searchFocusNode,
           showBorder: false,
           suffixIcon:
               const Icon(Icons.search, size: 26, color: ByatColors.white)),

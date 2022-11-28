@@ -1,15 +1,10 @@
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
-
-import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
-
-import 'package:bayt_test_app/ui/home/components/filter_sheet.dart';
 import 'package:bayt_test_app/util/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeUI extends StatelessWidget {
   const HomeUI({super.key});
@@ -21,8 +16,8 @@ class HomeUI extends StatelessWidget {
         Column(
           children: [
             Expanded(
-              child:
-                  Consumer<FilterProvider>(builder: (context, filter, child) {
+              child: Consumer2<FilterProvider, SearchProvider>(
+                  builder: (context, filter, searchProvider, child) {
                 return ListView.separated(
                     padding: const EdgeInsets.only(top: 20),
                     itemCount: filter.duplicatedData.length,
@@ -68,9 +63,8 @@ class HomeUI extends StatelessWidget {
                     children: searchProvider.searchedHistory
                         .map((e) => CustomBadge(
                               title: e,
-                              onTap: () {
-                                searchProvider.onSavedHistoryTap(e);
-                              },
+                              onTap: () =>
+                                  searchProvider.onSavedHistoryTagTap(e),
                             ))
                         .toList(),
                   ),

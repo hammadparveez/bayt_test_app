@@ -1,9 +1,9 @@
-import 'package:bayt_test_app/main.dart';
+
 import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/domain/model/user_model.dart';
-import 'package:bayt_test_app/provider/search_provider.dart';
+
 import 'package:flutter/material.dart';
-import 'package:bayt_test_app/util/extensions.dart';
+
 
 enum OrderBy { ascending, descending }
 

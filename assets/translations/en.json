@@ -27,6 +27,8 @@
     "strong_password": "Please enter a strong password",
     "you_signed_out": "You have been signed out",
     "something_went_wrong": "Oops, There was something wrong"
-,"byat_test_app":"Byat Test App"
+,"byat_test_app":"Byat Test App",
+"filter_by_nationality": "Filter by nationality",
+"date_range": "Date Range"
  }
   

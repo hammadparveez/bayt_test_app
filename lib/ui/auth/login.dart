@@ -1,14 +1,13 @@
-import 'package:bayt_test_app/domain/repository/auth_repo.dart';
+
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/base_widiget/loader_dialog.dart';
 import 'package:bayt_test_app/ui/base_widiget/message_dialog.dart';
 import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
-import 'package:bayt_test_app/util/colors.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
@@ -107,9 +106,9 @@ class _LoginUIState extends State<LoginUI> {
                 child: TextButton(
                     onPressed: () {
                       if (context.locale.languageCode == 'en') {
-                        context.setLocale(Locale('ar'));
+                        context.setLocale(const Locale('ar'));
                       } else {
-                        context.setLocale(Locale('en'));
+                        context.setLocale(const  Locale('en'));
                       }
                     },
                     child: Text('lang'.tr())),
