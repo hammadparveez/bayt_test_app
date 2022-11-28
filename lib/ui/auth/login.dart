@@ -66,8 +66,6 @@ class _LoginUIState extends State<LoginUI> {
 
   @override
   Widget build(BuildContext context) {
-    final x = Theme.of(context).useMaterial3;
-    debugPrint('x $x');
     return Scaffold(
       body: SafeArea(
         child: Padding(

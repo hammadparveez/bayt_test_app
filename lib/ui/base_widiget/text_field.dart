@@ -1,3 +1,4 @@
+import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class ByatTextField extends StatelessWidget {
@@ -9,6 +10,8 @@ class ByatTextField extends StatelessWidget {
     this.suffixIcon,
     this.suffixIconColor,
     this.prefixIconColor,
+    this.textColor,
+    this.cursorColor,
     this.hintText,
     this.isPassword = false,
     this.showBorder = true,
@@ -20,7 +23,7 @@ class ByatTextField extends StatelessWidget {
   final String? hintText;
   final bool isPassword;
   final bool showBorder;
-  final Color? prefixIconColor, suffixIconColor;
+  final Color? prefixIconColor, suffixIconColor, textColor, cursorColor;
 
   final outlineBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -29,14 +32,26 @@ class ByatTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSuffixIcon = suffixIcon.runtimeType == Icon;
+    final isPrefixIcon = suffixIcon.runtimeType == Icon;
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
       textAlignVertical: TextAlignVertical.center,
       obscureText: isPassword,
+      style: TextStyle(color: textColor),
+      cursorColor: cursorColor,
       decoration: InputDecoration(
-        suffixIcon: suffixIcon,
-        prefixIcon: prefixIcon,
+        suffixIcon: isSuffixIcon
+            ? IconTheme(
+                data: IconThemeData(color: suffixIconColor),
+                child: suffixIcon ?? const SizedBox())
+            : const SizedBox(),
+        prefixIcon: isPrefixIcon
+            ? IconTheme(
+                data: IconThemeData(color: prefixIconColor),
+                child: prefixIcon ?? const SizedBox())
+            : const SizedBox(),
         hintText: hintText,
         prefixIconColor: prefixIconColor,
         suffixIconColor: suffixIconColor,

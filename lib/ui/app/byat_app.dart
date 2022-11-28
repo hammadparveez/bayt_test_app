@@ -36,9 +36,10 @@ class ByatApp extends StatelessWidget {
               cardColor: ByatColors.primary,
               // radioTheme: RadioThemeData(
               //     fillColor: MaterialStateProperty.all(ByatColors.white)),
-              colorScheme: const ColorScheme.light(
+              colorScheme: ColorScheme.light(
                 primary: ByatColors.primary,
                 secondary: Color(0xff00ff00),
+                onSecondary: Color(0xff00ff00),
               ),
             ),
             onGenerateRoute: ByatRoute.onGenerateRoute,
