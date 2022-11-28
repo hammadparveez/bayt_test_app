@@ -1,4 +1,3 @@
-
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
@@ -16,13 +15,11 @@ class ByatApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-
-        ChangeNotifierProvider(create:  (_)=> FilterProvider()),
-        ChangeNotifierProxyProvider<FilterProvider,SearchProvider>(create: (_) => SearchProvider(),
-        update: (_,filterProvider,searchProvider) => searchProvider!..update(filterProvider)),
-
-
-
+        ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProxyProvider<FilterProvider, SearchProvider>(
+            create: (_) => SearchProvider(),
+            update: (_, filterProvider, searchProvider) =>
+                searchProvider!..update(filterProvider)),
       ],
       child: EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],
@@ -36,11 +33,14 @@ class ByatApp extends StatelessWidget {
             locale: context.locale,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-                cardColor: ByatColors.primary,
-                radioTheme: RadioThemeData(
-                    fillColor: MaterialStateProperty.all(ByatColors.white)),
-                colorScheme: const ColorScheme.light(
-                    primary: ByatColors.primary, onSurface: ByatColors.white)),
+              cardColor: ByatColors.primary,
+              // radioTheme: RadioThemeData(
+              //     fillColor: MaterialStateProperty.all(ByatColors.white)),
+              colorScheme: const ColorScheme.light(
+                primary: ByatColors.primary,
+                secondary: Color(0xff00ff00),
+              ),
+            ),
             onGenerateRoute: ByatRoute.onGenerateRoute,
             initialRoute: ByatRoute.login,
           );

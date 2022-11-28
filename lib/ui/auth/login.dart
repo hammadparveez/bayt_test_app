@@ -1,4 +1,3 @@
-
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
@@ -41,7 +40,6 @@ class _LoginUIState extends State<LoginUI> {
 
   void _eventListener() {
     final authProvider = context.read<AuthProvider>();
-
     switch (authProvider.authStatus) {
       case AuthStatus.loading:
         showDialog(
@@ -68,6 +66,8 @@ class _LoginUIState extends State<LoginUI> {
 
   @override
   Widget build(BuildContext context) {
+    final x = Theme.of(context).useMaterial3;
+    debugPrint('x $x');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -108,7 +108,7 @@ class _LoginUIState extends State<LoginUI> {
                       if (context.locale.languageCode == 'en') {
                         context.setLocale(const Locale('ar'));
                       } else {
-                        context.setLocale(const  Locale('en'));
+                        context.setLocale(const Locale('en'));
                       }
                     },
                     child: Text('lang'.tr())),

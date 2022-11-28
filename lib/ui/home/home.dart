@@ -13,77 +13,98 @@ class HomeUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Column(
-          children: [
-            Expanded(
-              child: Consumer2<FilterProvider, SearchProvider>(
-                  builder: (context, filter, searchProvider, child) {
-                return ListView.separated(
-                    padding: const EdgeInsets.only(top: 20),
-                    itemCount: filter.duplicatedData.length,
-                    separatorBuilder: (_, index) => const Divider(),
-                    itemBuilder: (_, index) {
-                      final item = filter.duplicatedData[index];
-                      final date = DateFormat.yMMMd().format(item.date);
-                      return ListTile(
-                        title: Text(item.name.toLowerCase().tr()),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text('Date: $date'),
-                            const SizedBox(width: 8),
-                            Text(
-                                'Nationality: ${filter.duplicatedData[index].nationality}'),
-                          ],
-                        ),
-                      );
-                    });
-              }),
-            ),
-          ],
-        ),
+        const _UsersListViewWidget(),
         Consumer2<FilterProvider, SearchProvider>(
-            builder: (context, filter, searchProvider, child) {
-          if (searchProvider.searchFocusNode.hasFocus &&
-              searchProvider.searchedHistory.isNotEmpty) {
+            builder: (context, filterProvider, searchProvider, child) {
+          final hasFocus = searchProvider.searchFocusNode.hasFocus;
+          final isHistoryNotEmpty = searchProvider.searchedHistory.isNotEmpty;
+          if (hasFocus && isHistoryNotEmpty) {
             return Positioned(
-                child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8)),
-                  color: Color(0xFFE9E8E8)),
-              width: double.infinity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    children: searchProvider.searchedHistory
-                        .map((e) => CustomBadge(
-                              title: e,
-                              onTap: () =>
-                                  searchProvider.onSavedHistoryTagTap(e),
-                            ))
-                        .toList(),
-                  ),
-                  const Divider(),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: CustomBadge(
-                        title: 'Clear history',
-                        onTap: searchProvider.clearSearchHistory,
-                        backgroundColor: ByatColors.ligtGrey,
-                        titleColor: ByatColors.black,
-                      )),
-                ],
-              ),
+                child: _SearchTagWidget(
+              filterProvider: filterProvider,
+              searchProvider: searchProvider,
             ));
           }
           return const SizedBox();
         }),
       ],
+    );
+  }
+}
+
+class _UsersListViewWidget extends StatelessWidget {
+  const _UsersListViewWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer2<FilterProvider, SearchProvider>(
+        builder: (context, filter, searchProvider, child) {
+      return ListView.separated(
+          padding: const EdgeInsets.only(top: 20),
+          itemCount: filter.duplicatedData.length,
+          separatorBuilder: (_, index) => const Divider(),
+          itemBuilder: (_, index) {
+            final item = filter.duplicatedData[index];
+            final date = DateFormat.yMMMd().format(item.date);
+            return ListTile(
+              title: Text(item.name.toLowerCase().tr()),
+              trailing: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('Date: $date'),
+                  const SizedBox(width: 8),
+                  Text(
+                      'Nationality: ${filter.duplicatedData[index].nationality}'),
+                ],
+              ),
+            );
+          });
+    });
+  }
+}
+
+class _SearchTagWidget extends StatelessWidget {
+  const _SearchTagWidget({
+    Key? key,
+    required this.filterProvider,
+    required this.searchProvider,
+  }) : super(key: key);
+  final FilterProvider filterProvider;
+  final SearchProvider searchProvider;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
+          color: Color(0xFFE9E8E8)),
+      width: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            children: searchProvider.searchedHistory
+                .map((e) => CustomBadge(
+                      title: e,
+                      onTap: () => searchProvider.onSavedHistoryTagTap(e),
+                    ))
+                .toList(),
+          ),
+          const Divider(),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: CustomBadge(
+                title: 'Clear history',
+                onTap: searchProvider.clearSearchHistory,
+                backgroundColor: ByatColors.ligtGrey,
+                titleColor: ByatColors.black,
+              )),
+        ],
+      ),
     );
   }
 }
