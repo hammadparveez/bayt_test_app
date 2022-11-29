@@ -1,3 +1,4 @@
+import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/locale_provider.dart';
 import 'package:bayt_test_app/provider/theme_provider.dart';
 import 'package:bayt_test_app/routes.dart';
@@ -20,8 +21,9 @@ class AccountUI extends StatelessWidget {
             child: ByatElevatedButton(
                 title: 'log_out'.tr(),
                 onTap: () {
+                  context.read<FilterProvider>().onResetFilter();
                   Navigator.pushNamedAndRemoveUntil(
-                      context, ByatRoute.login, (route) => false);
+                      context, ByatRoute.main, (route) => false);
                 }),
           ),
         ),

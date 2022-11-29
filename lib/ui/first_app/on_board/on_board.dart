@@ -1,6 +1,6 @@
-
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OnBoard extends StatelessWidget {
   const OnBoard({required this.onGetStarted, super.key});
@@ -15,13 +15,16 @@ class OnBoard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Welcome to Byat',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+              Text(
+                "welcome_byat".tr(),
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black),
               ),
               const _OnBaord1(),
               ByatElevatedButton(
-                  radius: 50, title: 'Get Started', onTap: onGetStarted),
+                  radius: 50, title: "get_started".tr(), onTap: onGetStarted),
             ],
           ),
         ),
@@ -50,9 +53,9 @@ class _OnBaord1 extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 16),
             child: Text(
-              'Welcome to Byat Test App tap,\n to continue',
+              "welcome_byat_text".tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20, color: Colors.black),
             ),
           ),
         ],

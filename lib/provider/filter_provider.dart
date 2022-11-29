@@ -74,6 +74,7 @@ class FilterProvider extends ChangeNotifier {
   }
 
   onApplyFilter() {
+    
     if (selectedNationality != 'All') {
       final filteredData = userData
           .where((item) => item.nationality == selectedNationality)

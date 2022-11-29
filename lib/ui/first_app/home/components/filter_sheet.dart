@@ -17,8 +17,8 @@ class FilterSheet extends StatelessWidget {
     final filterProvider = context.read<FilterProvider>();
     final searchProvider = context.read<SearchProvider>();
 
-    if (searchProvider.searchController.text.isNotEmpty) {
-      searchProvider.searchContentByName(searchProvider.searchController.text);
+    if (searchProvider.searchController!.text.isNotEmpty) {
+      searchProvider.searchContentByName(searchProvider.searchController!.text);
     } else {
       filterProvider.onApplyFilter();
     }

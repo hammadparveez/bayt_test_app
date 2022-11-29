@@ -17,7 +17,7 @@ class HomeUI extends StatelessWidget {
         const _UsersListViewWidget(),
         Consumer2<FilterProvider, SearchProvider>(
             builder: (context, filterProvider, searchProvider, child) {
-          final hasFocus = searchProvider.searchFocusNode.hasFocus;
+          final hasFocus = searchProvider.searchFocusNode!.hasFocus;
           final isHistoryNotEmpty = searchProvider.searchedHistory.isNotEmpty;
           if (hasFocus && isHistoryNotEmpty) {
             return Positioned(

@@ -60,7 +60,7 @@ final darkTheme = ThemeData(
             darkTheme: darkTheme,
             theme: lightTheme,
             onGenerateRoute: ByatRoute.onGenerateRoute,
-            initialRoute: ByatRoute.login,
+            initialRoute: ByatRoute.main,
             navigatorKey: ByatRoute.navigatorKey,
           );
         }),

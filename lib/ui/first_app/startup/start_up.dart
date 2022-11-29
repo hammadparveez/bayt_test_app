@@ -1,5 +1,6 @@
-import 'package:bayt_test_app/ui/second_app/auth/login.dart';
-import 'package:bayt_test_app/ui/second_app/on_board/on_board.dart';
+import 'package:bayt_test_app/ui/first_app/auth/login.dart';
+import 'package:bayt_test_app/ui/first_app/on_board/on_board.dart';
+
 import 'package:flutter/material.dart';
 
 class StartUpUI extends StatefulWidget {

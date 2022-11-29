@@ -51,7 +51,7 @@ class _LoginUIState extends State<LoginUI> {
         break;
       case AuthStatus.authenticated:
         Navigator.pushNamedAndRemoveUntil(
-            context, ByatRoute.main, (_) => false);
+            context, ByatRoute.home, (_) => false);
 
         break;
       case AuthStatus.failure:

@@ -31,5 +31,8 @@
     "filter_by_nationality":"تصفية حسب الجنسية",
     "date_range": "نطاق الموعد",
     "toggle_theme": "تبديل وضع السمة",
-    "toggle_lang": "تبديل اللغة"
+    "toggle_lang": "تبديل اللغة",
+    "welcome_byat": "مرحبا بكم في بيات",
+    "get_started": "البدء",
+    "welcome_byat_text":"مرحبًا بك في تطبيق Byat Test ، انقر للمتابعة"
  }

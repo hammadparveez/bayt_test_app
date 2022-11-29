@@ -26,19 +26,22 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
     super.initState();
 
     _searchProvider = context.read<SearchProvider>();
-
-    _searchProvider.searchController.addListener(() => _searchProvider
-        .searchContentByName(_searchProvider.searchController.text));
+    _searchProvider.searchController = TextEditingController();
+    _searchProvider.searchFocusNode = FocusNode();
+    _searchProvider.searchController!.addListener(_searchControllerListener);
     _searchProvider.searchFocusNode
-        .addListener(_searchProvider.saveSearchHistory);
+        !.addListener(_searchProvider.saveSearchHistory);
+  }
+
+  _searchControllerListener() {
+    _searchProvider.searchContentByName(_searchProvider.searchController!.text);
   }
 
   @override
   dispose() {
-    _searchProvider.searchController.removeListener(() => _searchProvider
-        .searchContentByName(_searchProvider.searchController.text));
-    _searchProvider.searchController.dispose();
-    _searchProvider.searchFocusNode.dispose();
+    _searchProvider.searchController!.removeListener(_searchControllerListener);
+    _searchProvider.searchController!.dispose();
+    _searchProvider.searchFocusNode!.dispose();
     super.dispose();
   }
 
@@ -59,15 +62,15 @@ class _BottomNavigationState extends State<BottomNavigationUI> {
         cursorColor: Theme.of(context).colorScheme.onPrimary,
         suffixIcon:
             Consumer<SearchProvider>(builder: (context, searchProvider, child) {
-          final hasFocus = searchProvider.searchFocusNode.hasFocus;
+          final hasFocus = searchProvider.searchFocusNode!.hasFocus;
           return IconButton(
             color: ByatColors.white,
             icon: hasFocus ? const Icon(Icons.close) : const Icon(Icons.search),
             onPressed: () {
               if (hasFocus) {
-                searchProvider.searchController.clear();
+                searchProvider.searchController!.clear();
               } else {
-                searchProvider.searchFocusNode.requestFocus();
+                searchProvider.searchFocusNode!.requestFocus();
               }
             },
           );

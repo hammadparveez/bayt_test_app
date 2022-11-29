@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:bayt_test_app/util/extensions.dart';
 
 class SearchProvider extends ChangeNotifier {
-  final TextEditingController searchController = TextEditingController();
-  final FocusNode searchFocusNode = FocusNode();
+  TextEditingController? searchController;
+  FocusNode? searchFocusNode;
   FilterProvider? filterProvider;
   final savedHistoryMaxLength = 12;
   List<String> searchedHistory = [];
@@ -25,8 +25,8 @@ class SearchProvider extends ChangeNotifier {
       filter.duplicatedData = userData.where((item) {
         bool containsName =
             item.name.toLowerCase().contains((name?.toLowerCase() ?? ''));
-        bool constainsNationality =
-            item.nationality == filter.selectedNationality;
+
+        bool constainsNationality = filter.selectedNationality  == 'All' ? true : (filter.selectedNationality == item.nationality );
 
         if (containsName && constainsNationality) {
           return true;
@@ -40,9 +40,9 @@ class SearchProvider extends ChangeNotifier {
 
   saveSearchHistory() {
     final history = pref!.getStringList(SEARCHED_HISTORY_KEY) ?? [];
-    if (!searchFocusNode.hasFocus) {
+    if (!searchFocusNode!.hasFocus) {
       if (pref != null) {
-        final text = searchController.text.toLowerCase();
+        final text = searchController!.text.toLowerCase();
         if (text.length > 1 && history.length < savedHistoryMaxLength) {
           if (!history.contains(text)) {
             history.add(text);
@@ -56,18 +56,18 @@ class SearchProvider extends ChangeNotifier {
   }
 
   onSavedHistoryTagTap(String text) {
-    searchController.text = text;
-    searchFocusNode.unfocus();
+    searchController!.text = text;
+    searchFocusNode!.unfocus();
     filterProvider?.duplicatedData = filterProvider!.duplicatedData
         .where((item) => item.name
             .toLowerCase()
-            .contains(searchController.text.toLowerCase()))
+            .contains(searchController!.text.toLowerCase()))
         .toList();
   }
 
   clearSearchHistory() async {
-    searchController.clear();
-    searchFocusNode.unfocus();
+    searchController!.clear();
+    searchFocusNode!.unfocus();
     await pref?.remove(SEARCHED_HISTORY_KEY);
     searchedHistory.clear();
     notifyListeners();
