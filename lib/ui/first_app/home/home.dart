@@ -1,3 +1,5 @@
+import 'package:bayt_test_app/domain/model/user_model.dart';
+import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/routes.dart';
@@ -5,6 +7,7 @@ import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class HomeUI extends StatelessWidget {
@@ -33,10 +36,46 @@ class HomeUI extends StatelessWidget {
   }
 }
 
-class _UsersListViewWidget extends StatelessWidget {
+class _UsersListViewWidget extends StatefulWidget {
   const _UsersListViewWidget({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<_UsersListViewWidget> createState() => _UsersListViewWidgetState();
+}
+
+class _UsersListViewWidgetState extends State<_UsersListViewWidget> {
+  final PagingController<int, UserModel> _pagingController =
+      PagingController(firstPageKey: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
+
+  @override
+  dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final isLastPage = userData.length < userData.length;
+      if (isLastPage) {
+        // _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 5;
+        _pagingController.appendPage(userData, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +89,7 @@ class _UsersListViewWidget extends StatelessWidget {
             final user = filter.duplicatedData[index];
             final date = DateFormat.yMMMd().format(user.date);
             return ListTile(
-              onTap:() {
+              onTap: () {
                 filter.onUserSelect(user);
                 Navigator.pushNamed(context, ByatRoute.userDetail);
               },

@@ -123,9 +123,10 @@ class _LoginUIState extends State<LoginUI> {
                   child: ByatElevatedButton(
                     title: 'sign_in'.tr(),
                     onTap: () {
-                      
-                      authProvider.login(
-                          emailController.text, passwordController.text);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, ByatRoute.home, (_) => false);
+                      // authProvider.login(
+                      //     emailController.text, passwordController.text);
                     },
                     hasSuffixIcon: true,
                   ),
