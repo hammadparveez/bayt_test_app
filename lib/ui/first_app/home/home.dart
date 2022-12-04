@@ -72,7 +72,7 @@ class _HomeUIState extends State<HomeUI> {
     await Future.delayed(const Duration(seconds: 2));
     bool isLastPage = checkIfLastPage(pageIndex);
     final maxSize = isLastPage
-        ? filter.duplicatedData.length
+        ? filter.users.length
         : (perPageNumberOfItems + pageIndex);
     final items = filter.getRangeOfData(pageIndex, maxSize);
 
@@ -86,7 +86,7 @@ class _HomeUIState extends State<HomeUI> {
 
   bool checkIfLastPage(int pageIndex) {
     return pageIndex + perPageNumberOfItems <
-            context.read<FilterProvider>().duplicatedData.length
+            context.read<FilterProvider>().users.length
         ? false
         : true;
   }

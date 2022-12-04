@@ -1,3 +1,4 @@
+import 'package:bayt_test_app/domain/model/user_model.dart';
 import 'package:bayt_test_app/main.dart';
 import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
@@ -15,27 +16,29 @@ class SearchProvider extends ChangeNotifier {
   void update(FilterProvider provider) => filterProvider = provider;
   void searchContentByName(String? name) {
     final filter = filterProvider!;
-    if (filter.selectedNationality == 'All' &&
-        filter.selectedDateOrder == OrderByDate.random) {
-      filter.duplicatedData = userData
-          .where((item) =>
-              item.name.toLowerCase().contains((name?.toLowerCase()) ?? ''))
-          .toList();
-    } else {
-      filter.duplicatedData = userData.where((item) {
-        bool containsName =
-            item.name.toLowerCase().contains((name?.toLowerCase() ?? ''));
+    filter.users = _getSearchedUsers(name);
 
-        bool constainsNationality = filter.selectedNationality  == 'All' ? true : (filter.selectedNationality == item.nationality );
-
-        if (containsName && constainsNationality) {
-          return true;
-        }
-        return false;
-      }).toList();
-      filter.sortDateOrder();
+    if (filter.users.isNotEmpty &&
+        filter.startDate != null &&
+        filter.endDate != null) {
+      filter.users =
+          filter.findUsersFromDateRange(filter.startDate!, filter.endDate!);
     }
     notifyListeners();
+  }
+
+  List<UserModel> _getSearchedUsers(String? name) {
+    return filterProvider!.getAllUsers().where((item) {
+      final username = item.name.toLowerCase();
+      final hasAllNationality = filterProvider!.selectedNationality == 'All';
+
+      bool containsName = username.contains((name?.toLowerCase() ?? ''));
+      bool constainsNationality = hasAllNationality
+          ? true
+          : (filterProvider!.selectedNationality == item.nationality);
+
+      return (containsName && constainsNationality) ? true : false;
+    }).toList();
   }
 
   saveSearchHistory() {
@@ -58,7 +61,7 @@ class SearchProvider extends ChangeNotifier {
   onSavedHistoryTagTap(String text) {
     searchController!.text = text;
     searchFocusNode!.unfocus();
-    filterProvider?.duplicatedData = filterProvider!.duplicatedData
+    filterProvider?.users = filterProvider!.users
         .where((item) => item.name
             .toLowerCase()
             .contains(searchController!.text.toLowerCase()))

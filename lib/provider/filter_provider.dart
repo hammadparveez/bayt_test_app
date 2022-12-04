@@ -4,26 +4,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
-enum OrderBy { ascending, descending }
-
-enum OrderByDate { oldest, latest, random }
-
 class FilterProvider extends ChangeNotifier {
   FilterProvider() {
     filterOnlyNationality();
+
+    startDate = users.first.date;
+    endDate = users.last.date;
   }
   // SearchProvider? searchProvider;
 
   final nationality = <String>[];
   UserModel? selectedUserModel;
-  List<UserModel> duplicatedData = userData;
+  List<UserModel> users = userData;
   String selectedNationality = 'All';
-  double startingDate = 0;
-  double endingDate = 100;
-  OrderBy orderedBy = OrderBy.ascending;
-  OrderByDate selectedDateOrder = OrderByDate.random;
+  DateTime? startDate, endDate;
 
-  // void update(SearchProvider provider) => searchProvider = provider;
   onUserSelect(UserModel user) {
     selectedUserModel = user;
     notifyListeners();
@@ -45,65 +40,50 @@ class FilterProvider extends ChangeNotifier {
     }
   }
 
-  onDateOrderSelect(OrderByDate? item) {
-    if (item != null) {
-      selectedDateOrder = item;
-      notifyListeners();
-    }
-  }
+  List<UserModel> getAllUsers() => userData;
+  List<UserModel> getSelectedNationalityUsers() => userData
+      .where((item) => item.nationality == selectedNationality)
+      .toList();
 
-  sortDateOrder() {
-    switch (selectedDateOrder) {
-      case OrderByDate.latest:
-        duplicatedData.sort((item1, item2) => item2.date.compareTo(item1.date));
-        break;
-      case OrderByDate.oldest:
-        duplicatedData.sort((item1, item2) => item1.date.compareTo(item2.date));
-        break;
-      case OrderByDate.random:
-        duplicatedData.shuffle();
-        break;
-    }
-  }
-
-  onDateRangeSelect(DateTimeRange range, List<UserModel> sortedData) {
-    final items = sortedData.where((element) {
-      final isStartDateSame = element.date.isAtSameMomentAs(range.start);
-      final isEndDateSame = element.date.isAtSameMomentAs(range.end);
-      final isDateBefore = element.date.isBefore(range.end);
-      final isDateAfter = element.date.isAfter(range.start);
-      if ((isStartDateSame || isDateAfter) && (isDateBefore || isEndDateSame)) {
-        return true;
-      }
-
-      return false;
-    }).toList();
-    duplicatedData = items;
+  setDateRange(DateTimeRange range) {
+    if (startDate == null && endDate == null) return null;
+    startDate = range.start;
+    endDate = range.end;
     notifyListeners();
   }
 
+  findUsersFromDateRange(DateTime startDate, DateTime endDate) {
+    return users.where((element) {
+      final isStartDateSame = element.date.isAtSameMomentAs(startDate);
+      final isEndDateSame = element.date.isAtSameMomentAs(endDate);
+      final isDateAfter = element.date.isAfter(startDate);
+      final isDateBefore = element.date.isBefore(endDate);
+      if ((isStartDateSame || isDateAfter) && (isDateBefore || isEndDateSame)) {
+        return true;
+      }
+      return false;
+    }).toList();
+  }
+
   onResetFilter() {
-    selectedDateOrder = OrderByDate.random;
     selectedNationality = 'All';
-    duplicatedData = userData;
+    users = getAllUsers();
+    startDate = users.first.date;
+    endDate = users.last.date;
     notifyListeners();
   }
 
   onApplyFilter() {
-    if (selectedNationality != 'All') {
-      final filteredData = userData
-          .where((item) => item.nationality == selectedNationality)
-          .toList();
-      duplicatedData = filteredData;
-      sortDateOrder();
-    } else {
-      duplicatedData = userData;
-      sortDateOrder();
-    }
+    users = (selectedNationality == 'All')
+        ? getAllUsers()
+        : getSelectedNationalityUsers();
 
+    if (startDate != null && endDate != null) {
+      users = findUsersFromDateRange(startDate!, endDate!);
+    }
     notifyListeners();
   }
 
   List<UserModel> getRangeOfData(int start, int end) =>
-      duplicatedData.getRange(start, end).toList();
+      users.getRange(start, end).toList();
 }

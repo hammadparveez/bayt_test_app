@@ -1,7 +1,7 @@
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/locale_provider.dart';
-import 'package:bayt_test_app/provider/pagination_provider.dart';
+
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/provider/theme_provider.dart';
 import 'package:bayt_test_app/routes.dart';
@@ -11,28 +11,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ByatApp extends StatelessWidget {
-   ByatApp({super.key});
+  ByatApp({super.key});
   final localePath = 'assets/translations';
 
+  final lightTheme = ThemeData(
+    indicatorColor: ByatColors.primaryDark,
+    cardColor: ByatColors.primary,
+    colorScheme: const ColorScheme.light(
+      primary: ByatColors.primary,
+    ),
+  );
 
-final lightTheme = ThemeData(
-              indicatorColor: ByatColors.primaryDark,
-              cardColor: ByatColors.primary,
-              colorScheme: const ColorScheme.light(
-                primary: ByatColors.primary,
-              ),
-            );
-
-final darkTheme = ThemeData(
-              // cardColor: ByatColors.primary,
-              indicatorColor: ByatColors.white,
-              colorScheme: const ColorScheme.dark(
-                onPrimary: ByatColors.white,
-                primary: ByatColors.primary,
-                surface: ByatColors.primary,
-                secondary: ByatColors.white,
-              ),
-            );
+  final darkTheme = ThemeData(
+    // cardColor: ByatColors.primary,
+    indicatorColor: ByatColors.white,
+    colorScheme: const ColorScheme.dark(
+      onPrimary: ByatColors.white,
+      primary: ByatColors.primary,
+      surface: ByatColors.primary,
+      secondary: ByatColors.white,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -45,10 +44,6 @@ final darkTheme = ThemeData(
             create: (_) => SearchProvider(),
             update: (_, filterProvider, searchProvider) =>
                 searchProvider!..update(filterProvider)),
-        ChangeNotifierProxyProvider<FilterProvider, PaginationProvider>(
-            create: (_) => PaginationProvider(null),
-            update: (_, filterProvider, paginationProvider) =>
-                paginationProvider!..update(filterProvider)),
       ],
       child: EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],
@@ -72,6 +67,4 @@ final darkTheme = ThemeData(
       ),
     );
   }
-
-
 }

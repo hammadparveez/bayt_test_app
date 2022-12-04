@@ -1,3 +1,5 @@
+import 'package:bayt_test_app/domain/model/user_model.dart';
+import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
 
@@ -29,6 +31,7 @@ class FilterSheet extends StatelessWidget {
 
   _onResetFilter(BuildContext context) {
     context.read<FilterProvider>().onResetFilter();
+    pageController.refresh();
     Navigator.pop(context);
   }
 
@@ -42,11 +45,11 @@ class FilterSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _filterByNationality(),
-            _filterDateRange(),
+            _filterDateRange(context),
             const Spacer(),
-            ByatElevatedButton(
-                title: 'Select By Date Range',
-                onTap: () => _openDateRangeSelector(context)),
+            // ByatElevatedButton(
+            //     title: 'Select By Date Range',
+            //     onTap: () => _openDateRangeSelector(context)),
             Row(
               children: [
                 Expanded(
@@ -73,8 +76,11 @@ class FilterSheet extends StatelessWidget {
 
   _openDateRangeSelector(BuildContext context) async {
     final filterProvider = context.read<FilterProvider>();
-    final data = filterProvider.duplicatedData;
-    data.sort((a, b) => a.date.compareTo(b.date));
+    List<UserModel> data = [];
+    data = (filterProvider.selectedNationality == 'All')
+        ? filterProvider.getAllUsers()
+        : filterProvider.getSelectedNationalityUsers();
+
     final range = await showDateRangePicker(
         context: context,
         locale: context.locale,
@@ -87,40 +93,42 @@ class FilterSheet extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * .85,
                   child: widget),
             ),
+        currentDate: filterProvider.startDate,
         firstDate: data.first.date,
         lastDate: data.last.date);
     if (range != null) {
-      filterProvider.onDateRangeSelect(range, data);
-      pageController.refresh();
+      filterProvider.setDateRange(range);
     }
   }
 
-  FilterCard _filterDateRange() {
+  FilterCard _filterDateRange(BuildContext context) {
     return FilterCard(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('date_range'.tr(), style: const TextStyle(fontSize: 18)),
-        Consumer<FilterProvider>(builder: (context, filter, child) {
-          return DropdownButton(
-              value: filter.selectedDateOrder,
-              underline: const SizedBox(),
-              isExpanded: true,
-              iconEnabledColor: Theme.of(context).brightness == Brightness.light
-                  ? ByatColors.dropdownArrowColor
-                  : null,
-              dropdownColor: Theme.of(context).brightness == Brightness.light
-                  ? ByatColors.primary
-                  : ByatColors.dropdownColor,
-              style: const TextStyle(color: Colors.white),
-              items: OrderByDate.values
-                  .map((e) => DropdownMenuItem(
-                      value: e, child: Text(e.name.toUpperCase())))
-                  .toList(),
-              onChanged: filter.onDateOrderSelect);
-        }),
-      ],
-    ));
+        child: Consumer<FilterProvider>(builder: (_, filterProvider, child) {
+      return Row(
+        children: [
+          DateRangeCard(time: filterProvider.startDate!),
+          LayoutBuilder(builder: (context, constraints) {
+            debugPrint('-> $constraints');
+            return const SizedBox(
+                height: 50, child: VerticalDivider(color: ByatColors.white));
+          }),
+          DateRangeCard(time: filterProvider.endDate!),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: ByatColors.primaryDark,
+              ),
+              child: ByatElevatedButton(
+                  title: 'Change Date',
+                  onTap: () => _openDateRangeSelector(context)),
+            ),
+          ),
+        ],
+      );
+    }));
   }
 
   FilterCard _filterByNationality() {
@@ -136,6 +144,35 @@ class FilterSheet extends StatelessWidget {
               onDropdownSelect: filter.onNationalitySelect,
             );
           }),
+        ],
+      ),
+    );
+  }
+}
+
+class DateRangeCard extends StatelessWidget {
+  const DateRangeCard({Key? key, required this.time}) : super(key: key);
+  final DateTime time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: ByatColors.primaryDark,
+      ),
+      child: Column(
+        children: [
+          Text('${time.year}'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              '${time.day}',
+              style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text(DateFormat.MMM().format(time)),
         ],
       ),
     );

@@ -29,5 +29,4 @@ final userData = [
   UserModel('Zohain', DateTime.parse('2022-12-20'), 'Iran'),
   UserModel('Shayan', DateTime.parse('2022-12-27'), 'Netherland'),
   UserModel('Rafay', DateTime.parse('2022-12-21'), 'Pakistan'),
-];
-//..sort((a, b) => a.date.compareTo(b.date));
+]..sort((a, b) => a.date.compareTo(b.date));
