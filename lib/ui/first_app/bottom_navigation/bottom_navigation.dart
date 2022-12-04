@@ -19,87 +19,20 @@ class BottomNavigationUI extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigationUI> {
   int _selectedIndex = 0;
-  late final SearchProvider _searchProvider;
-
-  @override
-  initState() {
-    super.initState();
-
-    _searchProvider = context.read<SearchProvider>();
-    _searchProvider.searchController = TextEditingController();
-    _searchProvider.searchFocusNode = FocusNode();
-    _searchProvider.searchController!.addListener(_searchControllerListener);
-    _searchProvider.searchFocusNode
-        !.addListener(_searchProvider.saveSearchHistory);
-  }
-
-  _searchControllerListener() {
-    _searchProvider.searchContentByName(_searchProvider.searchController!.text);
-  }
-
-  @override
-  dispose() {
-    _searchProvider.searchController!.removeListener(_searchControllerListener);
-    _searchProvider.searchController!.dispose();
-    _searchProvider.searchFocusNode!.dispose();
-    super.dispose();
-  }
-
+final screens = [
+      HomeUI(),
+      CheckoutUI(),
+      AccountUI(),
+    ];
   _onSelectNavigation(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  PreferredSizeWidget _homeUIAppBar(BuildContext context) {
-    return AppBar(
-      title: ByatTextField(
-        controller: context.read<SearchProvider>().searchController,
-        focusNode: context.read<SearchProvider>().searchFocusNode,
-        showBorder: false,
-        suffixIconColor: Theme.of(context).colorScheme.onPrimary,
-        textColor: Theme.of(context).colorScheme.onPrimary,
-        cursorColor: Theme.of(context).colorScheme.onPrimary,
-        suffixIcon:
-            Consumer<SearchProvider>(builder: (context, searchProvider, child) {
-          final hasFocus = searchProvider.searchFocusNode!.hasFocus;
-          return IconButton(
-            color: ByatColors.white,
-            icon: hasFocus ? const Icon(Icons.close) : const Icon(Icons.search),
-            onPressed: () {
-              if (hasFocus) {
-                searchProvider.searchController!.clear();
-              } else {
-                searchProvider.searchFocusNode!.requestFocus();
-              }
-            },
-          );
-        }),
-        // Icon(
-        //     context.watch<SearchProvider>().searchFocusNode.hasFocus
-        //         ? Icons.close
-        //         : Icons.search,
-        //     size: 26)),
-      ),
-      actions: [
-        IconButton(
-            onPressed: () => showModalBottomSheet(
-                context: context, builder: (_) => const FilterSheet()),
-            icon: const Icon(Icons.filter_alt)),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      HomeUI(),
-      CheckoutUI(),
-      AccountUI(),
-    ];
-
     return Scaffold(
-      appBar: _selectedIndex == 0 ? _homeUIAppBar(context) : null,
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _onSelectNavigation,

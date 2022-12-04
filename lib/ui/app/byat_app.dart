@@ -1,6 +1,7 @@
 import 'package:bayt_test_app/provider/auth_provider.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
 import 'package:bayt_test_app/provider/locale_provider.dart';
+import 'package:bayt_test_app/provider/pagination_provider.dart';
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/provider/theme_provider.dart';
 import 'package:bayt_test_app/routes.dart';
@@ -44,6 +45,10 @@ final darkTheme = ThemeData(
             create: (_) => SearchProvider(),
             update: (_, filterProvider, searchProvider) =>
                 searchProvider!..update(filterProvider)),
+        ChangeNotifierProxyProvider<FilterProvider, PaginationProvider>(
+            create: (_) => PaginationProvider(null),
+            update: (_, filterProvider, paginationProvider) =>
+                paginationProvider!..update(filterProvider)),
       ],
       child: EasyLocalization(
         supportedLocales: const [Locale('en'), Locale('ar')],

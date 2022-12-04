@@ -88,4 +88,8 @@ class FilterProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+  List<UserModel> getRangeOfData(int start, int end) =>
+      duplicatedData
+      .getRange(start, end)
+      .toList();
 }
