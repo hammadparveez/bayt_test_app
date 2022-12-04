@@ -7,12 +7,13 @@ import 'package:bayt_test_app/ui/first_app/home/components/filter_dropdown.dart'
 
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class FilterSheet extends StatelessWidget {
-  const FilterSheet({super.key});
-
+  const FilterSheet({super.key, required this.pageController});
+  final PagingController pageController;
   _onFilterApply(BuildContext context) {
     final filterProvider = context.read<FilterProvider>();
     final searchProvider = context.read<SearchProvider>();
@@ -22,6 +23,7 @@ class FilterSheet extends StatelessWidget {
     } else {
       filterProvider.onApplyFilter();
     }
+    pageController.refresh();
     Navigator.pop(context);
   }
 
@@ -44,40 +46,7 @@ class FilterSheet extends StatelessWidget {
             const Spacer(),
             ByatElevatedButton(
                 title: 'Select By Date Range',
-                onTap: () async {
-                  final data = context.read<FilterProvider>().duplicatedData;
-                  data.sort((a, b) => a.date.compareTo(b.date));
-                  final range = await showDateRangePicker(
-                      context: context,
-                      locale: context.locale,
-                      builder: (_, widget) => Center(
-                            child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                height:
-                                    MediaQuery.of(context).size.height * .85,
-                                child: widget),
-                          ),
-                      firstDate: data.first.date,
-                      lastDate: data.last.date);
-
-                  final items = data.where((element) {
-                    final isStartDateSame =
-                        element.date.isAtSameMomentAs(range!.start);
-                    final isEndDateSame =
-                        element.date.isAtSameMomentAs(range.end);
-                    if ((isStartDateSame ||
-                            element.date.isAfter(range.start)) &&
-                        (element.date.isBefore(range.end) || isEndDateSame)) {
-                      return true;
-                    }
-                    return false;
-                  }).toList();
-                  debugPrint('Items $items');
-                }),
+                onTap: () => _openDateRangeSelector(context)),
             Row(
               children: [
                 Expanded(
@@ -100,6 +69,30 @@ class FilterSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _openDateRangeSelector(BuildContext context) async {
+    final filterProvider = context.read<FilterProvider>();
+    final data = filterProvider.duplicatedData;
+    data.sort((a, b) => a.date.compareTo(b.date));
+    final range = await showDateRangePicker(
+        context: context,
+        locale: context.locale,
+        builder: (_, widget) => Center(
+              child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  clipBehavior: Clip.antiAlias,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  height: MediaQuery.of(context).size.height * .85,
+                  child: widget),
+            ),
+        firstDate: data.first.date,
+        lastDate: data.last.date);
+    if (range != null) {
+      filterProvider.onDateRangeSelect(range, data);
+      pageController.refresh();
+    }
   }
 
   FilterCard _filterDateRange() {

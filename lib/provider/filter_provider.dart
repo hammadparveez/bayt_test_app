@@ -66,6 +66,22 @@ class FilterProvider extends ChangeNotifier {
     }
   }
 
+  onDateRangeSelect(DateTimeRange range, List<UserModel> sortedData) {
+    final items = sortedData.where((element) {
+      final isStartDateSame = element.date.isAtSameMomentAs(range.start);
+      final isEndDateSame = element.date.isAtSameMomentAs(range.end);
+      final isDateBefore = element.date.isBefore(range.end);
+      final isDateAfter = element.date.isAfter(range.start);
+      if ((isStartDateSame || isDateAfter) && (isDateBefore || isEndDateSame)) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+    duplicatedData = items;
+    notifyListeners();
+  }
+
   onResetFilter() {
     selectedDateOrder = OrderByDate.random;
     selectedNationality = 'All';
@@ -74,7 +90,6 @@ class FilterProvider extends ChangeNotifier {
   }
 
   onApplyFilter() {
-    
     if (selectedNationality != 'All') {
       final filteredData = userData
           .where((item) => item.nationality == selectedNationality)
@@ -88,8 +103,7 @@ class FilterProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
   List<UserModel> getRangeOfData(int start, int end) =>
-      duplicatedData
-      .getRange(start, end)
-      .toList();
+      duplicatedData.getRange(start, end).toList();
 }

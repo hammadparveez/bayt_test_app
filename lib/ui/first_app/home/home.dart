@@ -1,7 +1,6 @@
 import 'package:bayt_test_app/domain/model/user_model.dart';
-import 'package:bayt_test_app/mock_data.dart';
 import 'package:bayt_test_app/provider/filter_provider.dart';
-import 'package:bayt_test_app/provider/pagination_provider.dart';
+
 import 'package:bayt_test_app/provider/search_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/custom_badge.dart';
@@ -9,7 +8,7 @@ import 'package:bayt_test_app/ui/base_widiget/text_field.dart';
 import 'package:bayt_test_app/ui/first_app/home/components/filter_sheet.dart';
 import 'package:bayt_test_app/util/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -30,19 +29,18 @@ class _HomeUIState extends State<HomeUI> {
   initState() {
     super.initState();
     _initControllers();
-    _initListeners();
+    _attachListeners();
   }
 
   //Initializing controllers
   _initControllers() {
-    
     _searchProvider = context.read<SearchProvider>();
     _searchProvider.searchController = TextEditingController();
     _searchProvider.searchFocusNode = FocusNode();
   }
 
   //Attaching event listeners
-  _initListeners() {
+  _attachListeners() {
     _pagingController.addPageRequestListener(_fetchItems);
     _searchProvider.searchController!.addListener(_searchControllerListener);
     _searchProvider.searchFocusNode!
@@ -101,22 +99,8 @@ class _HomeUIState extends State<HomeUI> {
         Expanded(
           child: Stack(
             children: [
-              _UsersListViewWidget(controller: _pagingController),
-              Consumer2<FilterProvider, SearchProvider>(
-                  builder: (context, filterProvider, searchProvider, child) {
-                final hasFocus = searchProvider.searchFocusNode!.hasFocus;
-                final isHistoryNotEmpty =
-                    searchProvider.searchedHistory.isNotEmpty;
-                if (hasFocus && isHistoryNotEmpty) {
-                  return Positioned(
-                      child: _SearchTagWidget(
-                    filterProvider: filterProvider,
-                    searchProvider: searchProvider,
-                    onClearHistory: _pagingController.refresh,
-                  ));
-                }
-                return const SizedBox();
-              }),
+              _UsersListView(controller: _pagingController),
+              _SavedSearches(onClearHistory: _pagingController.refresh),
             ],
           ),
         ),
@@ -162,7 +146,7 @@ class _HomeUIState extends State<HomeUI> {
             IconButton(
                 color: Theme.of(context).colorScheme.onPrimary,
                 onPressed: () => showModalBottomSheet(
-                    context: context, builder: (_) => const FilterSheet()),
+                    context: context, builder: (_) =>  FilterSheet(pageController: _pagingController)),
                 icon: const Icon(Icons.filter_alt)),
           ],
         ),
@@ -171,8 +155,8 @@ class _HomeUIState extends State<HomeUI> {
   }
 }
 
-class _UsersListViewWidget extends StatelessWidget {
-  const _UsersListViewWidget({required this.controller});
+class _UsersListView extends StatelessWidget {
+  const _UsersListView({required this.controller});
   final PagingController<int, UserModel> controller;
   @override
   Widget build(BuildContext context) {
@@ -229,55 +213,60 @@ class _UsersListViewWidget extends StatelessWidget {
   }
 }
 
-class _SearchTagWidget extends StatelessWidget {
-  const _SearchTagWidget({
+class _SavedSearches extends StatelessWidget {
+  const _SavedSearches({
     Key? key,
-    required this.filterProvider,
-    required this.searchProvider,
     this.onClearHistory,
     this.onHistoryTagTap,
   }) : super(key: key);
-  final FilterProvider filterProvider;
-  final SearchProvider searchProvider;
+
   final VoidCallback? onHistoryTagTap, onClearHistory;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8)),
-          color: Color(0xFFE9E8E8)),
-      width: double.infinity,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            children: searchProvider.searchedHistory
-                .map((e) => CustomBadge(
-                      title: e,
-                      onTap: () {
-                        searchProvider.onSavedHistoryTagTap(e);
-                        if (onHistoryTagTap != null) onHistoryTagTap!();
-                      },
-                    ))
-                .toList(),
+    return Consumer<SearchProvider>(builder: (context, searchProvider, child) {
+      final hasNotFocus = !searchProvider.searchFocusNode!.hasFocus;
+      final isHistoryEmpty = searchProvider.searchedHistory.isEmpty;
+      if (hasNotFocus || isHistoryEmpty) return const SizedBox();
+      return Positioned(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8)),
+              color: Color(0xFFE9E8E8)),
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                children: searchProvider.searchedHistory
+                    .map((e) => CustomBadge(
+                          title: e,
+                          onTap: () {
+                            searchProvider.onSavedHistoryTagTap(e);
+                            if (onHistoryTagTap != null) onHistoryTagTap!();
+                          },
+                        ))
+                    .toList(),
+              ),
+              const Divider(),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: CustomBadge(
+                    title: 'Clear history',
+                    onTap: () {
+                      searchProvider.clearSearchHistory();
+                      if (onClearHistory != null) onClearHistory!();
+                    },
+                    backgroundColor: ByatColors.ligtGrey,
+                    titleColor: ByatColors.black,
+                  )),
+            ],
           ),
-          const Divider(),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: CustomBadge(
-                title: 'Clear history',
-                onTap: () {
-                  searchProvider.clearSearchHistory();
-                  if (onClearHistory != null) onClearHistory!();
-                },
-                backgroundColor: ByatColors.ligtGrey,
-                titleColor: ByatColors.black,
-              )),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }
