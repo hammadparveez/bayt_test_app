@@ -3,6 +3,7 @@ import 'package:bayt_test_app/provider/locale_provider.dart';
 import 'package:bayt_test_app/provider/theme_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
+import 'package:bayt_test_app/ui/first_app/bottom_navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,12 @@ class AccountUI extends StatelessWidget {
             widthFactor: .8,
             child: ByatElevatedButton(
                 title: 'toggle_lang'.tr(),
-                onTap: context.read<LocaleProvider>().toggleLang),
+                onTap: () {
+                  context.read<LocaleProvider>().toggleLang(context);
+                  context
+                      .findAncestorStateOfType<BottomNavigationState>()
+                      ?.refreshState();
+                }),
           ),
         ),
       ],

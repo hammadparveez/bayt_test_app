@@ -58,6 +58,7 @@ class _HomeUIState extends State<HomeUI> {
   //Disposing controllers and listeners
   @override
   dispose() {
+    _pagingController.removePageRequestListener(_fetchItems);
     _pagingController.dispose();
     _searchProvider.searchController!.removeListener(_searchControllerListener);
     _searchProvider.searchController!.dispose();
@@ -70,10 +71,11 @@ class _HomeUIState extends State<HomeUI> {
     final filter = context.read<FilterProvider>();
     //to show a loader for 2 seconds;
     await Future.delayed(const Duration(seconds: 2));
+    
+    if (!mounted) return;
     bool isLastPage = checkIfLastPage(pageIndex);
-    final maxSize = isLastPage
-        ? filter.users.length
-        : (perPageNumberOfItems + pageIndex);
+    final maxSize =
+        isLastPage ? filter.users.length : (perPageNumberOfItems + pageIndex);
     final items = filter.getRangeOfData(pageIndex, maxSize);
 
     if (isLastPage) {
@@ -146,7 +148,9 @@ class _HomeUIState extends State<HomeUI> {
             IconButton(
                 color: Theme.of(context).colorScheme.onPrimary,
                 onPressed: () => showModalBottomSheet(
-                    context: context, builder: (_) =>  FilterSheet(pageController: _pagingController)),
+                    context: context,
+                    builder: (_) =>
+                        FilterSheet(pageController: _pagingController)),
                 icon: const Icon(Icons.filter_alt)),
           ],
         ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class LocaleProvider {
-  void toggleLang() {
-    final ctx = ByatRoute.navigatorKey.currentContext!;
+  void toggleLang(BuildContext ctx) {
+    
     if (ctx.locale.languageCode == 'en') {
       ctx.setLocale(const Locale('ar'));
     } else {
