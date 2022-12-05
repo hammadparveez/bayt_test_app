@@ -1,4 +1,5 @@
 import 'package:bayt_test_app/provider/auth_provider.dart';
+import 'package:bayt_test_app/provider/locale_provider.dart';
 import 'package:bayt_test_app/routes.dart';
 import 'package:bayt_test_app/ui/base_widiget/elevated_button.dart';
 import 'package:bayt_test_app/ui/base_widiget/loader_dialog.dart';
@@ -108,32 +109,22 @@ class _LoginUIState extends State<LoginUI> {
                             Theme.of(context).brightness == Brightness.dark
                                 ? ByatColors.white
                                 : Theme.of(context).colorScheme.primary)),
-                    onPressed: () {
-                      if (context.locale.languageCode == 'en') {
-                        context.setLocale(const Locale('ar'));
-                      } else {
-                        context.setLocale(const Locale('en'));
-                      }
-                    },
+                    onPressed: () =>
+                        context.read<LocaleProvider>().toggleLang(context),
                     child: Text('lang'.tr())),
               ),
-              Consumer<AuthProvider>(builder: (context, authProvider, child) {
-                return FractionallySizedBox(
-                  widthFactor: .7,
-                  child: ByatElevatedButton(
-                    title: 'sign_in'.tr(),
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        ByatRoute.home,
-                      );
-                      // authProvider.login(
-                      //     emailController.text, passwordController.text);
-                    },
-                    hasSuffixIcon: true,
-                  ),
-                );
-              }),
+              FractionallySizedBox(
+                widthFactor: .7,
+                child: ByatElevatedButton(
+                  title: 'sign_in'.tr(),
+                  onTap: () {
+                    context
+                        .read<AuthProvider>()
+                        .login(emailController.text, passwordController.text);
+                  },
+                  hasSuffixIcon: true,
+                ),
+              ),
             ],
           ),
         ),

@@ -41,6 +41,7 @@ class ByatTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
+      
       textAlignVertical: TextAlignVertical.center,
       obscureText: isPassword,
       style: TextStyle(color: textColor),
